@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "FeaturedViewController.h"
+#import "VehicleViewController.h"
+#import "ServiceViewController.h"
+#import "RecordViewController.h"
 
 @implementation AppDelegate
 
@@ -17,11 +21,25 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    FeaturedViewController *vc = [FeaturedViewController new];
+   // VehicleViewController *mc = [VehicleViewController new];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:vc];
+    self.window.rootViewController = nc;
+    
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
 }
+//- (NSManagedObjectContext *)managedObjectContext {
+//    NSManagedObjectContext *context = nil;
+//    id delegate = [[UIApplication sharedApplication] delegate];
+//    if ([delegate performSelector:@selector(managedObjectContext)]) {
+//        context = [delegate managedObjectContext];
+//    }
+//    return context;
+//}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
