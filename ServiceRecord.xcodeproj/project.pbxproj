@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28BBD9E118CE508C00C2BFAF /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BBD9E018CE508C00C2BFAF /* Record.m */; };
+		28BBD9E418CE508D00C2BFAF /* Vehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BBD9E318CE508D00C2BFAF /* Vehicle.m */; };
+		28C8903918B3984000F8D37A /* im26.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903818B3984000F8D37A /* im26.jpg */; };
+		28C8903B18B3984900F8D37A /* im16.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903A18B3984900F8D37A /* im16.jpg */; };
+		28C8903D18B3985800F8D37A /* im31.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903C18B3985800F8D37A /* im31.jpg */; };
+		28C8904018B39AE400F8D37A /* VehicleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8903F18B39AE400F8D37A /* VehicleViewController.m */; };
+		28C8904318B6867D00F8D37A /* ServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8904218B6867D00F8D37A /* ServiceViewController.m */; };
+		28C8904918B6950000F8D37A /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8904818B6950000F8D37A /* RecordViewController.m */; };
+		28C8906318BBC52700F8D37A /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C8906218BBC52700F8D37A /* settings.png */; };
 		28C8C16C18A97E0F009231DA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C8C16B18A97E0F009231DA /* Foundation.framework */; };
 		28C8C16E18A97E0F009231DA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C8C16D18A97E0F009231DA /* CoreGraphics.framework */; };
 		28C8C17018A97E0F009231DA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C8C16F18A97E0F009231DA /* UIKit.framework */; };
@@ -22,6 +31,8 @@
 		28C8C18D18A97E0F009231DA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C8C17118A97E0F009231DA /* CoreData.framework */; };
 		28C8C19518A97E0F009231DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28C8C19318A97E0F009231DA /* InfoPlist.strings */; };
 		28C8C19718A97E0F009231DA /* ServiceRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8C19618A97E0F009231DA /* ServiceRecordTests.m */; };
+		28C8C1A218A982F5009231DA /* FeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8C1A118A982F5009231DA /* FeaturedViewController.m */; };
+		28FEA71518C0ECBA00D1655E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FEA71418C0ECBA00D1655E /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +46,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28BBD9DF18CE508C00C2BFAF /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
+		28BBD9E018CE508C00C2BFAF /* Record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Record.m; sourceTree = "<group>"; };
+		28BBD9E218CE508D00C2BFAF /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
+		28BBD9E318CE508D00C2BFAF /* Vehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vehicle.m; sourceTree = "<group>"; };
+		28C8903818B3984000F8D37A /* im26.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im26.jpg; path = ../../../Pictures/im26.jpg; sourceTree = "<group>"; };
+		28C8903A18B3984900F8D37A /* im16.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im16.jpg; path = ../../../Pictures/im16.jpg; sourceTree = "<group>"; };
+		28C8903C18B3985800F8D37A /* im31.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im31.jpg; path = ../../../Pictures/im31.jpg; sourceTree = "<group>"; };
+		28C8903E18B39AE400F8D37A /* VehicleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VehicleViewController.h; sourceTree = "<group>"; };
+		28C8903F18B39AE400F8D37A /* VehicleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VehicleViewController.m; sourceTree = "<group>"; };
+		28C8904118B6867D00F8D37A /* ServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceViewController.h; sourceTree = "<group>"; };
+		28C8904218B6867D00F8D37A /* ServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceViewController.m; sourceTree = "<group>"; };
+		28C8904718B6950000F8D37A /* RecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordViewController.h; path = ../RecordViewController.h; sourceTree = "<group>"; };
+		28C8904818B6950000F8D37A /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordViewController.m; path = ../RecordViewController.m; sourceTree = "<group>"; };
+		28C8906218BBC52700F8D37A /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settings.png; path = ../../../../../../Volumes/Stallion/Downloads/settings.png; sourceTree = "<group>"; };
 		28C8C16818A97E0F009231DA /* ServiceRecord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ServiceRecord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28C8C16B18A97E0F009231DA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		28C8C16D18A97E0F009231DA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,6 +78,9 @@
 		28C8C19218A97E0F009231DA /* ServiceRecordTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ServiceRecordTests-Info.plist"; sourceTree = "<group>"; };
 		28C8C19418A97E0F009231DA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		28C8C19618A97E0F009231DA /* ServiceRecordTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceRecordTests.m; sourceTree = "<group>"; };
+		28C8C1A018A982F5009231DA /* FeaturedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeaturedViewController.h; path = ViewControllers/FeaturedViewController.h; sourceTree = "<group>"; };
+		28C8C1A118A982F5009231DA /* FeaturedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeaturedViewController.m; path = ViewControllers/FeaturedViewController.m; sourceTree = "<group>"; };
+		28FEA71418C0ECBA00D1655E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28FEA71518C0ECBA00D1655E /* MobileCoreServices.framework in Frameworks */,
 				28C8C16E18A97E0F009231DA /* CoreGraphics.framework in Frameworks */,
 				28C8C17218A97E0F009231DA /* CoreData.framework in Frameworks */,
 				28C8C17018A97E0F009231DA /* UIKit.framework in Frameworks */,
@@ -81,6 +110,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28C8903718B3982600F8D37A /* images */ = {
+			isa = PBXGroup;
+			children = (
+				28C8906218BBC52700F8D37A /* settings.png */,
+				28C8903C18B3985800F8D37A /* im31.jpg */,
+				28C8903A18B3984900F8D37A /* im16.jpg */,
+				28C8903818B3984000F8D37A /* im26.jpg */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		28C8C15F18A97E0F009231DA = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +143,7 @@
 		28C8C16A18A97E0F009231DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28FEA71418C0ECBA00D1655E /* MobileCoreServices.framework */,
 				28C8C16B18A97E0F009231DA /* Foundation.framework */,
 				28C8C16D18A97E0F009231DA /* CoreGraphics.framework */,
 				28C8C16F18A97E0F009231DA /* UIKit.framework */,
@@ -117,8 +158,21 @@
 			children = (
 				28C8C17C18A97E0F009231DA /* AppDelegate.h */,
 				28C8C17D18A97E0F009231DA /* AppDelegate.m */,
+				28C8C1A018A982F5009231DA /* FeaturedViewController.h */,
+				28C8C1A118A982F5009231DA /* FeaturedViewController.m */,
+				28C8903E18B39AE400F8D37A /* VehicleViewController.h */,
+				28C8903F18B39AE400F8D37A /* VehicleViewController.m */,
+				28C8904118B6867D00F8D37A /* ServiceViewController.h */,
+				28C8904218B6867D00F8D37A /* ServiceViewController.m */,
+				28C8904718B6950000F8D37A /* RecordViewController.h */,
+				28C8904818B6950000F8D37A /* RecordViewController.m */,
+				28C8903718B3982600F8D37A /* images */,
 				28C8C18218A97E0F009231DA /* Images.xcassets */,
 				28C8C17F18A97E0F009231DA /* ServiceRecord.xcdatamodeld */,
+				28BBD9DF18CE508C00C2BFAF /* Record.h */,
+				28BBD9E018CE508C00C2BFAF /* Record.m */,
+				28BBD9E218CE508D00C2BFAF /* Vehicle.h */,
+				28BBD9E318CE508D00C2BFAF /* Vehicle.m */,
 				28C8C17418A97E0F009231DA /* Supporting Files */,
 			);
 			path = ServiceRecord;
@@ -197,7 +251,7 @@
 		28C8C16018A97E0F009231DA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Black Magma Inc.";
 				TargetAttributes = {
 					28C8C18718A97E0F009231DA = {
@@ -228,8 +282,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28C8903B18B3984900F8D37A /* im16.jpg in Resources */,
 				28C8C17818A97E0F009231DA /* InfoPlist.strings in Resources */,
+				28C8906318BBC52700F8D37A /* settings.png in Resources */,
+				28C8903918B3984000F8D37A /* im26.jpg in Resources */,
 				28C8C18318A97E0F009231DA /* Images.xcassets in Resources */,
+				28C8903D18B3985800F8D37A /* im31.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +307,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				28C8C17E18A97E0F009231DA /* AppDelegate.m in Sources */,
+				28BBD9E118CE508C00C2BFAF /* Record.m in Sources */,
+				28BBD9E418CE508D00C2BFAF /* Vehicle.m in Sources */,
 				28C8C17A18A97E0F009231DA /* main.m in Sources */,
+				28C8904318B6867D00F8D37A /* ServiceViewController.m in Sources */,
+				28C8C1A218A982F5009231DA /* FeaturedViewController.m in Sources */,
+				28C8904018B39AE400F8D37A /* VehicleViewController.m in Sources */,
+				28C8904918B6950000F8D37A /* RecordViewController.m in Sources */,
 				28C8C18118A97E0F009231DA /* ServiceRecord.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -296,7 +360,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -336,7 +399,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -395,7 +457,6 @@
 		28C8C19E18A97E0F009231DA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ServiceRecord.app/ServiceRecord";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -418,7 +479,6 @@
 		28C8C19F18A97E0F009231DA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ServiceRecord.app/ServiceRecord";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -453,6 +513,7 @@
 				28C8C19C18A97E0F009231DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		28C8C19D18A97E0F009231DA /* Build configuration list for PBXNativeTarget "ServiceRecordTests" */ = {
 			isa = XCConfigurationList;
@@ -461,6 +522,7 @@
 				28C8C19F18A97E0F009231DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
