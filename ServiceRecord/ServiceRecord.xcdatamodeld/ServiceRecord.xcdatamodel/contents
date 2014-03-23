@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Record" representedClassName="Record" syncable="YES">
-        <attribute name="cost" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="cost" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="odometer" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="odometer" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="task" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RecordPhoto" inverseName="record" inverseEntity="RecordPhoto" syncable="YES"/>
         <relationship name="vehicle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Vehicle" inverseName="records" inverseEntity="Vehicle" syncable="YES"/>
+    </entity>
+    <entity name="RecordPhoto" representedClassName="RecordPhoto" syncable="YES">
+        <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="photo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="photos" inverseEntity="Record" syncable="YES"/>
     </entity>
     <entity name="Vehicle" representedClassName="Vehicle" syncable="YES">
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="odometer" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="odometer" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="spec" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="units" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Record" inverseName="vehicle" inverseEntity="Record" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Record" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Vehicle" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Record" positionX="0" positionY="0" width="128" height="148"/>
+        <element name="Vehicle" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="RecordPhoto" positionX="9" positionY="63" width="128" height="88"/>
     </elements>
 </model>

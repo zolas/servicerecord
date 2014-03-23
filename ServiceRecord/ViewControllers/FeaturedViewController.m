@@ -15,7 +15,6 @@
 @interface FeaturedViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) NSArray *myVehicleArray;
 @property (nonatomic, strong) NSArray *myMaintenanceArray;
-@property (nonatomic, strong) NSString *myTitle;
 //@property (nonatomic, strong) UITableView *vehicleTableView;
 @property (nonatomic, strong) UIToolbar *mainToolbar;
 @property (nonatomic, strong) IBOutlet UIImageView *photoView;
@@ -31,6 +30,16 @@
 
 @implementation FeaturedViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.title=@"ChainLube";
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.title=@"";
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -70,8 +79,7 @@
     }
     
     [super viewDidLoad];
-    self.myTitle = @"ServiceRecord";
-    self.title = self.myTitle;
+
     //    CGFloat customToolbarHeight = 40;
     //
     //

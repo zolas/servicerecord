@@ -20,6 +20,7 @@
 @property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) NSDate *datePicked;
 @property (nonatomic, strong) NSDateFormatter *dateFormat;
+@property (nonatomic, strong) NSMutableArray *photoRecords;
 
 
 
@@ -31,6 +32,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *photoView;
 @property (nonatomic, strong) IBOutlet NSData *photoData;
 @property (nonatomic, strong) IBOutlet UIImage *photo;
+@property (nonatomic, strong) IBOutlet UIImageView *cameraView;
+
 
 - (IBAction)cancel:(id)sender;
 
@@ -66,7 +69,7 @@ UIActionSheet *pickerViewPopup;
     [super viewDidAppear:animated];
     if (self.selectedRecord)
     {
-        self.title = [NSString stringWithFormat:@"Edit Record: %@ ",self.selectedRecord.task];
+        self.title = [NSString stringWithFormat:@"Edit Record"];
 
     }
     else
@@ -85,40 +88,39 @@ UIActionSheet *pickerViewPopup;
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    CGFloat customToolbarHeight = 40;
+//    CGFloat customToolbarHeight = 40;
 
-
-    
-    
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave  target:self action:@selector(saveButtonPressed)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
-    self.mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,self.view.frame.size.height - customToolbarHeight , self.view.frame.size.width, customToolbarHeight) ];
-    self.mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    NSMutableArray *toolbarItems = [[NSMutableArray alloc] init];
+//    self.mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,self.view.frame.size.height - customToolbarHeight , self.view.frame.size.width, customToolbarHeight) ];
+//    self.mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+//    NSMutableArray *toolbarItems = [[NSMutableArray alloc] init];
+//    
+//    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(save:)]];
+//    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
+//    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
+//    
+//    //self.costTextField.delegate = self;
+//    [self.mainToolbar setItems:toolbarItems animated:NO];
+//    // [items release];
+////    [self.view addSubview:self.mainToolbar];
+//    
+//    
+//    self.cameraToolbar = [UIToolbar new];
+//    self.cameraToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+//    //    self.cameraToolbar.backgroundColor = [UIColor whiteColor];
+//    self.cameraToolbar.barTintColor =[UIColor whiteColor];
+//    self.cameraToolbar.frame = CGRectMake(110, 35, 60, 30);
+//
+//    NSMutableArray *cameraItems = [[NSMutableArray alloc] init];
+//    
+//    [cameraItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
+//    
+//    [self.cameraToolbar setItems:cameraItems animated:NO];
     
-    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(save:)]];
-    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
-    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
-    
-    //self.costTextField.delegate = self;
-    [self.mainToolbar setItems:toolbarItems animated:NO];
-    // [items release];
-//    [self.view addSubview:self.mainToolbar];
-    
-    
-    self.cameraToolbar = [UIToolbar new];
-    self.cameraToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    //    self.cameraToolbar.backgroundColor = [UIColor whiteColor];
-    self.cameraToolbar.barTintColor =[UIColor whiteColor];
-    self.cameraToolbar.frame = CGRectMake(110, 35, 60, 30);
+    self.cameraView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera.png"]];
 
-    NSMutableArray *cameraItems = [[NSMutableArray alloc] init];
-    
-    [cameraItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
-    
-    [self.cameraToolbar setItems:cameraItems animated:NO];
-    
     
     
 //    self.propertyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, (self.view.frame.size.height - customToolbarHeight))];
@@ -185,7 +187,6 @@ UIActionSheet *pickerViewPopup;
     self.odometerTextField.placeholder = @"Odometer";
     self.odometerTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.odometerTextField.keyboardType = UIKeyboardTypeNumberPad;
-    self.odometerTextField.returnKeyType = UIReturnKeyDone;
     self.odometerTextField.delegate = self;
     self.odometerTextField.frame = CGRectMake(0, 10, 150, textFieldHeight);
     
@@ -205,7 +206,7 @@ UIActionSheet *pickerViewPopup;
     self.noteTextView.font = [UIFont systemFontOfSize:15];
     self.noteTextView.autocorrectionType = UITextAutocorrectionTypeYes;
     self.noteTextView.keyboardType = UIKeyboardTypeDefault;
-    self.noteTextView.returnKeyType = UIReturnKeyDone;
+    self.noteTextView.returnKeyType = UIReturnKeyDefault;
     self.noteTextView.layer.borderColor = ([[UIColor lightGrayColor] CGColor]);
     self.noteTextView.layer.borderWidth = 0.5f;
     self.noteTextView.layer.cornerRadius = 8.0f;
@@ -215,7 +216,7 @@ UIActionSheet *pickerViewPopup;
 //    self.noteTextView.delegate = self;
 
 
-
+    self.photoRecords = [NSMutableArray new];
     
     if (self.selectedRecord)
     {
@@ -224,15 +225,34 @@ UIActionSheet *pickerViewPopup;
         self.taskTextField.text = self.selectedRecord.task;
         self.dateTextField.text = [self.dateFormat stringFromDate:self.selectedRecord.date];
         self.noteTextView.text = self.selectedRecord.note;
+        
+        [self.selectedRecord.photos enumerateObjectsUsingBlock:^(RecordPhoto *b, NSUInteger i, BOOL *stop) {
+            
+//            UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:b.photo scale:[[UIScreen mainScreen] scale]]];
+//            [existingPhoto sizeToFit];
+            //                existingPhoto.frame = CGRectMake(10,0,40,40);
+            UITextField *newTextField = [UITextField new];
+            newTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+            newTextField.borderStyle = UITextBorderStyleRoundedRect;
+            newTextField.font = [UIFont systemFontOfSize:15];
+            newTextField.placeholder = @"Label";
+            newTextField.autocorrectionType = UITextAutocorrectionTypeYes;
+            if (b.label)
+                newTextField.text = b.label;
+            [self.photoRecords addObject:@{@"photo":b.photo,@"label":newTextField}];
+
+        }];
 
         
-        if  (self.selectedRecord.image)
-        {
-            self.photoView = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:self.selectedRecord.image scale:[[UIScreen mainScreen] scale]]];
-            [self.photoView sizeToFit];
-//            self.photoView.frame = CGRectMake(10,0,40,40);
-//            [self.view addSubview:self.photoView];
-        }
+//        RecordPhoto *b = self.selectedRecord.photos[0];
+//        
+//        if  (b.photo)
+//        {
+//            self.photoView = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:b.photo scale:[[UIScreen mainScreen] scale]]];
+//            [self.photoView sizeToFit];
+////            self.photoView.frame = CGRectMake(10,0,40,40);
+////            [self.view addSubview:self.photoView];
+//        }
 
         
         
@@ -317,7 +337,7 @@ UIActionSheet *pickerViewPopup;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return PropertyCount;
+    return self.photoRecords.count + PropertyCount;
     //return [self.myVehicleArray count];
     
 }
@@ -332,30 +352,38 @@ UIActionSheet *pickerViewPopup;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     }
-    
 
+    
+    
     switch (indexPath.row) {
         case Task:{
             cell.textLabel.text = @"Task";
             cell.accessoryView = self.taskTextField;
+            cell.imageView.image = nil;
+
 //            [cell.contentView addSubview:self.taskTextField];
 //            [cell.contentView bringSubviewToFront:self.taskTextField];
         }break;
         case Date:{
             cell.textLabel.text = @"Date";
             cell.accessoryView = self.dateTextField;
+            cell.imageView.image = nil;
+
 //            [cell.contentView addSubview:self.dateTextField];
 //            [cell.contentView bringSubviewToFront:self.dateTextField];
         }break;
         case Odometer:{
             cell.textLabel.text = [NSString stringWithFormat:@"Odometer (%@) ",self.selectedVehicle.units];
             cell.accessoryView = self.odometerTextField;
+            cell.imageView.image = nil;
+
 //            [cell.contentView addSubview:self.odometerTextField];
 //            [cell.contentView bringSubviewToFront:self.odometerTextField];
         }break;
         case Cost:{
             cell.textLabel.text = @"Cost";
             cell.accessoryView = self.costTextField;
+            cell.imageView.image = nil;
 
 //            [cell.contentView addSubview:self.costTextField];
 //            [cell.contentView bringSubviewToFront:self.costTextField];
@@ -363,22 +391,78 @@ UIActionSheet *pickerViewPopup;
         case Note:{
             cell.textLabel.text = @"Note";
             cell.accessoryView = self.noteTextView;
+            cell.imageView.image = nil;
+
 //            [cell.contentView addSubview:self.noteTextView];
 //            [cell.contentView bringSubviewToFront:self.noteTextView];
         }break;
         case Photo:{
             cell.textLabel.text = @"Add Photo";
+            cell.imageView.image = nil;
+
             //            cell.imageView.image = self.photoView.image;
-            [cell.contentView addSubview:self.cameraToolbar];
-            [cell.contentView bringSubviewToFront:self.cameraToolbar];
-            [self.photoView sizeToFit];
-            cell.accessoryView = self.photoView;
+//            [cell.contentView addSubview:self.cameraToolbar];
+//            [cell.contentView bringSubviewToFront:self.cameraToolbar];
+
+                cell.accessoryView = self.cameraView;
+        }break;
+        default:{
+            long i = indexPath.row - PropertyCount;
+            [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
+                if (idx == i){
+                   UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:k[@"photo"] scale:[[UIScreen mainScreen] scale]]];
+                    [existingPhoto sizeToFit];
+                    cell.imageView.image = existingPhoto.image;
+                    cell.accessoryView = k[@"label"];
+                }
+            }];
+//            if (self.photoRecords[i]){
+//                RecordPhoto *b = self.photoRecords[i];
+//                UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:b.photo scale:[[UIScreen mainScreen] scale]]];
+//                [existingPhoto sizeToFit];
+//                //                existingPhoto.frame = CGRectMake(10,0,40,40);
+//                if (b.label)
+//                {
+//                    
+//                    newTextField.text = b.label;
+//                }
+////                existingPhoto.frame = CGRectMake(10,0,40,40);
+//                cell.imageView.image = existingPhoto.image;
+//                cell.accessoryView = newTextField;
+            
+        }break;
+
+        
+            /*
+             
+             RecordPhoto *b = self.selectedRecord.photos[0];
+             
+             if  (b.photo)
+             {
+             self.photoView = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:b.photo scale:[[UIScreen mainScreen] scale]]];
+             [self.photoView sizeToFit];
+             //            self.photoView.frame = CGRectMake(10,0,40,40);
+             //            [self.view addSubview:self.photoView];
+             }
+             
+             int i = 0;
+             while(i < numberOfImages){
+             i = i + 200;
+             UIImageView *i = [UIImageView alloc] initWithFrame:CGRectMake(20, i, 200, 100)]
+             ....
+             [sv addSubView:i];
+             i++;
+             }
+             
+             */
+            
+    
         
 //            [cell.contentView addSubview:self.photoView];
 //            [cell.contentView bringSubviewToFront:self.photoView];
             
             
-        }break;
+        
             
     }
     
@@ -432,12 +516,34 @@ UIActionSheet *pickerViewPopup;
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return NO;
+    switch (indexPath.row) {
+
+default:{
+    long i = indexPath.row - PropertyCount;
+    if (i >=0) return YES;
+    else return NO;
+    
+}break;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    switch (indexPath.row) {
+            
+        default:{
+            long i = indexPath.row - PropertyCount;
+            [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
+                if (idx == i){
+                    [self.photoRecords removeObjectAtIndex:idx];
+                    
+                    
+                }
+            }];
+        }break;
+    }
+
+
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -494,6 +600,18 @@ UIActionSheet *pickerViewPopup;
         case Photo:{
             [self cameraButtonPressed];
         }break;
+        default:{
+            long i = indexPath.row - PropertyCount;
+            
+            [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
+                if (idx == i){
+//                    UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:k[@"photo"] scale:[[UIScreen mainScreen] scale]]];
+//                    [existingPhoto sizeToFit];
+                    UITextField *m = k[@"label"];
+                    [m becomeFirstResponder];
+                }
+            }];
+        }break;
     }
 }
 
@@ -529,10 +647,43 @@ UIActionSheet *pickerViewPopup;
 
         self.selectedRecord.vehicle = self.selectedVehicle;
         self.title = [NSString stringWithFormat:@"Edit Record: %@ ",self.taskTextField.text];
-        if  (self.photoData)
-        {
-            self.selectedRecord.image = self.photoData;
+        
+        if (self.photoRecords.count == 0) {
+            [self.selectedRecord.photos enumerateObjectsUsingBlock:^(RecordPhoto *k, NSUInteger idx, BOOL *stop) {
+                AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+                [delegate.managedObjectContext deleteObject:k];
+                NSError *error = nil;
+                if (![delegate.managedObjectContext save:&error]) {
+                    NSLog(@"Can't Delete! %@ %@", error, [error localizedDescription]);
+                    return;
+                }
+                
+
+            }];
+            
         }
+        else{
+        [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger i, BOOL *stop) {
+            
+            UITextField *d = k[@"label"];
+            
+            if (self.selectedRecord.photos.count < i){
+            RecordPhoto *c = self.selectedRecord.photos[i];
+                c.photo = k[@"photo"];
+                if (d.text) c.label = d.text;
+//                c.record = self.selectedRecord;
+            }
+            else{
+                RecordPhoto *c = [NSEntityDescription insertNewObjectForEntityForName:@"RecordPhoto" inManagedObjectContext:delegate.managedObjectContext];
+                if (d.text) c.label = d.text;
+                c.photo = k[@"photo"];
+                c.record = self.selectedRecord;
+                
+            }
+                
+               }];
+        }
+
 //        [ServiceViewController.serviceTableView reloadData];
 
     }
@@ -545,12 +696,41 @@ UIActionSheet *pickerViewPopup;
     newRecord.cost = [NSNumber numberWithInt: [self.costTextField.text intValue]];
     newRecord.note = self.noteTextView.text;
     newRecord.vehicle = self.selectedVehicle;
+    
         
-    if  (self.photoData)
-    {
-        newRecord.image = self.photoData;
-    }
+        [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger i, BOOL *stop) {
+                RecordPhoto *c = [NSEntityDescription insertNewObjectForEntityForName:@"RecordPhoto" inManagedObjectContext:delegate.managedObjectContext];
+                UITextField *d = k[@"label"];
 
+                c.photo = k[@"photo"];
+                if (d.text) c.label = d.text;
+                c.record = newRecord;
+                
+            
+            
+        }];
+        
+//        while (self.photoRecords[i]){
+//            
+//            RecordPhoto *b = newRecord.photos[i];
+//            UIImageView *p = self.photoRecords[i][0];
+//            NSString *l = [NSString new];
+//            
+//            if (self.photoRecords[i][1])
+//            {
+//                UITextField *newTextField = [UITextField new];
+//                newTextField = self.photoRecords[i][1];
+//                l = newTextField.text;
+//            }
+//            else{
+//                l = @"";
+//            }
+//            NSData *photoData = UIImagePNGRepresentation(p.image);
+//            if (photoData) b.photo = photoData;
+//            b.label = l;
+//            i++;
+//    
+//        }
         
         
         //Clear text fields
@@ -667,6 +847,9 @@ UIActionSheet *pickerViewPopup;
     self.photoView.image = [self imageWithImage:self.photoView.image convertToSize:CGSizeMake(80, 80)];
     [self.photoView sizeToFit];
     self.photoData = UIImagePNGRepresentation(self.photoView.image);
+    UITextField *newTextField = [UITextField new];
+    [self.photoRecords addObject:@{@"photo":self.photoData,@"Label":newTextField}];
+
     //    self.photoView.frame = CGRectMake(10,0,40,40);
     //    [self.view addSubview:self.photoView];
     // [self.view addSubview:imageView];

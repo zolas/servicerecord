@@ -1,8 +1,8 @@
 //
 //  Vehicle.h
-//  ServiceRecord
+//  ChainLube
 //
-//  Created by Gray on 2014-03-10.
+//  Created by Gray on 2014-03-22.
 //  Copyright (c) 2014 Black Magma Inc. All rights reserved.
 //
 
@@ -14,10 +14,10 @@
 @interface Vehicle : NSManagedObject
 
 @property (nonatomic, retain) NSData * image;
-@property (nonatomic, retain) NSString * spec;
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * odometer;
 @property (nonatomic, retain) NSString * note;
+@property (nonatomic, retain) NSNumber * odometer;
+@property (nonatomic, retain) NSString * spec;
 @property (nonatomic, retain) NSString * units;
 @property (nonatomic, retain) NSOrderedSet *records;
 @end

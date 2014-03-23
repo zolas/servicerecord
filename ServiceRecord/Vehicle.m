@@ -1,8 +1,8 @@
 //
 //  Vehicle.m
-//  ServiceRecord
+//  ChainLube
 //
-//  Created by Gray on 2014-03-10.
+//  Created by Gray on 2014-03-22.
 //  Copyright (c) 2014 Black Magma Inc. All rights reserved.
 //
 
@@ -13,10 +13,10 @@
 @implementation Vehicle
 
 @dynamic image;
-@dynamic spec;
 @dynamic name;
-@dynamic odometer;
 @dynamic note;
+@dynamic odometer;
+@dynamic spec;
 @dynamic units;
 @dynamic records;
 

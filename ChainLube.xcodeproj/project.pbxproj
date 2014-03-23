@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		28BBD9E118CE508C00C2BFAF /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BBD9E018CE508C00C2BFAF /* Record.m */; };
-		28BBD9E418CE508D00C2BFAF /* Vehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BBD9E318CE508D00C2BFAF /* Vehicle.m */; };
+		2865B8DB18D54C00007F8E7F /* camera512.png in Resources */ = {isa = PBXBuildFile; fileRef = 2865B8DA18D54C00007F8E7F /* camera512.png */; };
+		2865B8DD18D5518A007F8E7F /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2865B8DC18D5518A007F8E7F /* camera@2x.png */; };
+		2865B8DF18D55190007F8E7F /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 2865B8DE18D55190007F8E7F /* camera.png */; };
+		2865B8EB18DD4A92007F8E7F /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865B8EA18DD4A92007F8E7F /* Record.m */; };
+		2865B8EE18DD4A93007F8E7F /* RecordPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865B8ED18DD4A93007F8E7F /* RecordPhoto.m */; };
+		2865B8F118DD4A93007F8E7F /* Vehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865B8F018DD4A93007F8E7F /* Vehicle.m */; };
 		28C8903918B3984000F8D37A /* im26.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903818B3984000F8D37A /* im26.jpg */; };
 		28C8903B18B3984900F8D37A /* im16.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903A18B3984900F8D37A /* im16.jpg */; };
 		28C8903D18B3985800F8D37A /* im31.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903C18B3985800F8D37A /* im31.jpg */; };
@@ -46,10 +50,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		28BBD9DF18CE508C00C2BFAF /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
-		28BBD9E018CE508C00C2BFAF /* Record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Record.m; sourceTree = "<group>"; };
-		28BBD9E218CE508D00C2BFAF /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
-		28BBD9E318CE508D00C2BFAF /* Vehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vehicle.m; sourceTree = "<group>"; };
+		2865B8DA18D54C00007F8E7F /* camera512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera512.png; sourceTree = "<group>"; };
+		2865B8DC18D5518A007F8E7F /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		2865B8DE18D55190007F8E7F /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		2865B8E918DD4A92007F8E7F /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
+		2865B8EA18DD4A92007F8E7F /* Record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Record.m; sourceTree = "<group>"; };
+		2865B8EC18DD4A93007F8E7F /* RecordPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordPhoto.h; sourceTree = "<group>"; };
+		2865B8ED18DD4A93007F8E7F /* RecordPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordPhoto.m; sourceTree = "<group>"; };
+		2865B8EF18DD4A93007F8E7F /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
+		2865B8F018DD4A93007F8E7F /* Vehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vehicle.m; sourceTree = "<group>"; };
 		28C8903818B3984000F8D37A /* im26.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im26.jpg; path = ../../../Pictures/im26.jpg; sourceTree = "<group>"; };
 		28C8903A18B3984900F8D37A /* im16.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im16.jpg; path = ../../../Pictures/im16.jpg; sourceTree = "<group>"; };
 		28C8903C18B3985800F8D37A /* im31.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im31.jpg; path = ../../../Pictures/im31.jpg; sourceTree = "<group>"; };
@@ -60,7 +69,7 @@
 		28C8904718B6950000F8D37A /* RecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordViewController.h; path = ../RecordViewController.h; sourceTree = "<group>"; };
 		28C8904818B6950000F8D37A /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordViewController.m; path = ../RecordViewController.m; sourceTree = "<group>"; };
 		28C8906218BBC52700F8D37A /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settings.png; path = ../../../../../../Volumes/Stallion/Downloads/settings.png; sourceTree = "<group>"; };
-		28C8C16818A97E0F009231DA /* ServiceRecord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ServiceRecord.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28C8C16818A97E0F009231DA /* ChainLube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChainLube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28C8C16B18A97E0F009231DA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		28C8C16D18A97E0F009231DA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28C8C16F18A97E0F009231DA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -113,6 +122,9 @@
 		28C8903718B3982600F8D37A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				2865B8DA18D54C00007F8E7F /* camera512.png */,
+				2865B8DC18D5518A007F8E7F /* camera@2x.png */,
+				2865B8DE18D55190007F8E7F /* camera.png */,
 				28C8906218BBC52700F8D37A /* settings.png */,
 				28C8903C18B3985800F8D37A /* im31.jpg */,
 				28C8903A18B3984900F8D37A /* im16.jpg */,
@@ -124,7 +136,7 @@
 		28C8C15F18A97E0F009231DA = {
 			isa = PBXGroup;
 			children = (
-				28C8C17318A97E0F009231DA /* ServiceRecord */,
+				28C8C17318A97E0F009231DA /* ChainLube */,
 				28C8C19018A97E0F009231DA /* ServiceRecordTests */,
 				28C8C16A18A97E0F009231DA /* Frameworks */,
 				28C8C16918A97E0F009231DA /* Products */,
@@ -134,7 +146,7 @@
 		28C8C16918A97E0F009231DA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				28C8C16818A97E0F009231DA /* ServiceRecord.app */,
+				28C8C16818A97E0F009231DA /* ChainLube.app */,
 				28C8C18818A97E0F009231DA /* ServiceRecordTests.xctest */,
 			);
 			name = Products;
@@ -153,7 +165,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		28C8C17318A97E0F009231DA /* ServiceRecord */ = {
+		28C8C17318A97E0F009231DA /* ChainLube */ = {
 			isa = PBXGroup;
 			children = (
 				28C8C17C18A97E0F009231DA /* AppDelegate.h */,
@@ -169,12 +181,15 @@
 				28C8903718B3982600F8D37A /* images */,
 				28C8C18218A97E0F009231DA /* Images.xcassets */,
 				28C8C17F18A97E0F009231DA /* ServiceRecord.xcdatamodeld */,
-				28BBD9DF18CE508C00C2BFAF /* Record.h */,
-				28BBD9E018CE508C00C2BFAF /* Record.m */,
-				28BBD9E218CE508D00C2BFAF /* Vehicle.h */,
-				28BBD9E318CE508D00C2BFAF /* Vehicle.m */,
+				2865B8EF18DD4A93007F8E7F /* Vehicle.h */,
+				2865B8F018DD4A93007F8E7F /* Vehicle.m */,
+				2865B8EC18DD4A93007F8E7F /* RecordPhoto.h */,
+				2865B8ED18DD4A93007F8E7F /* RecordPhoto.m */,
+				2865B8E918DD4A92007F8E7F /* Record.h */,
+				2865B8EA18DD4A92007F8E7F /* Record.m */,
 				28C8C17418A97E0F009231DA /* Supporting Files */,
 			);
+			name = ChainLube;
 			path = ServiceRecord;
 			sourceTree = "<group>";
 		};
@@ -210,9 +225,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		28C8C16718A97E0F009231DA /* ServiceRecord */ = {
+		28C8C16718A97E0F009231DA /* ChainLube */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 28C8C19A18A97E0F009231DA /* Build configuration list for PBXNativeTarget "ServiceRecord" */;
+			buildConfigurationList = 28C8C19A18A97E0F009231DA /* Build configuration list for PBXNativeTarget "ChainLube" */;
 			buildPhases = (
 				28C8C16418A97E0F009231DA /* Sources */,
 				28C8C16518A97E0F009231DA /* Frameworks */,
@@ -222,9 +237,9 @@
 			);
 			dependencies = (
 			);
-			name = ServiceRecord;
+			name = ChainLube;
 			productName = ServiceRecord;
-			productReference = 28C8C16818A97E0F009231DA /* ServiceRecord.app */;
+			productReference = 28C8C16818A97E0F009231DA /* ChainLube.app */;
 			productType = "com.apple.product-type.application";
 		};
 		28C8C18718A97E0F009231DA /* ServiceRecordTests */ = {
@@ -254,12 +269,15 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Black Magma Inc.";
 				TargetAttributes = {
+					28C8C16718A97E0F009231DA = {
+						DevelopmentTeam = RB33Z6JE4A;
+					};
 					28C8C18718A97E0F009231DA = {
 						TestTargetID = 28C8C16718A97E0F009231DA;
 					};
 				};
 			};
-			buildConfigurationList = 28C8C16318A97E0F009231DA /* Build configuration list for PBXProject "ServiceRecord" */;
+			buildConfigurationList = 28C8C16318A97E0F009231DA /* Build configuration list for PBXProject "ChainLube" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -271,7 +289,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				28C8C16718A97E0F009231DA /* ServiceRecord */,
+				28C8C16718A97E0F009231DA /* ChainLube */,
 				28C8C18718A97E0F009231DA /* ServiceRecordTests */,
 			);
 		};
@@ -284,8 +302,11 @@
 			files = (
 				28C8903B18B3984900F8D37A /* im16.jpg in Resources */,
 				28C8C17818A97E0F009231DA /* InfoPlist.strings in Resources */,
+				2865B8DF18D55190007F8E7F /* camera.png in Resources */,
+				2865B8DD18D5518A007F8E7F /* camera@2x.png in Resources */,
 				28C8906318BBC52700F8D37A /* settings.png in Resources */,
 				28C8903918B3984000F8D37A /* im26.jpg in Resources */,
+				2865B8DB18D54C00007F8E7F /* camera512.png in Resources */,
 				28C8C18318A97E0F009231DA /* Images.xcassets in Resources */,
 				28C8903D18B3985800F8D37A /* im31.jpg in Resources */,
 			);
@@ -306,15 +327,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2865B8EB18DD4A92007F8E7F /* Record.m in Sources */,
 				28C8C17E18A97E0F009231DA /* AppDelegate.m in Sources */,
-				28BBD9E118CE508C00C2BFAF /* Record.m in Sources */,
-				28BBD9E418CE508D00C2BFAF /* Vehicle.m in Sources */,
 				28C8C17A18A97E0F009231DA /* main.m in Sources */,
 				28C8904318B6867D00F8D37A /* ServiceViewController.m in Sources */,
+				2865B8F118DD4A93007F8E7F /* Vehicle.m in Sources */,
 				28C8C1A218A982F5009231DA /* FeaturedViewController.m in Sources */,
 				28C8904018B39AE400F8D37A /* VehicleViewController.m in Sources */,
 				28C8904918B6950000F8D37A /* RecordViewController.m in Sources */,
 				28C8C18118A97E0F009231DA /* ServiceRecord.xcdatamodeld in Sources */,
+				2865B8EE18DD4A93007F8E7F /* RecordPhoto.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,7 +353,7 @@
 /* Begin PBXTargetDependency section */
 		28C8C18F18A97E0F009231DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 28C8C16718A97E0F009231DA /* ServiceRecord */;
+			target = 28C8C16718A97E0F009231DA /* ChainLube */;
 			targetProxy = 28C8C18E18A97E0F009231DA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -433,10 +455,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ServiceRecord/ServiceRecord-Prefix.pch";
 				INFOPLIST_FILE = "ServiceRecord/ServiceRecord-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ChainLube;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -446,10 +469,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ServiceRecord/ServiceRecord-Prefix.pch";
 				INFOPLIST_FILE = "ServiceRecord/ServiceRecord-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ChainLube;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -497,7 +521,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		28C8C16318A97E0F009231DA /* Build configuration list for PBXProject "ServiceRecord" */ = {
+		28C8C16318A97E0F009231DA /* Build configuration list for PBXProject "ChainLube" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				28C8C19818A97E0F009231DA /* Debug */,
@@ -506,7 +530,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		28C8C19A18A97E0F009231DA /* Build configuration list for PBXNativeTarget "ServiceRecord" */ = {
+		28C8C19A18A97E0F009231DA /* Build configuration list for PBXNativeTarget "ChainLube" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				28C8C19B18A97E0F009231DA /* Debug */,

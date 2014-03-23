@@ -42,9 +42,9 @@
   # Units still doesn't save or work
  # Image needs to be high res and work on import/export.
  
+ Modified core data to include a one to many relationship between a new entity <photorecords> and records. Will add a cell for each photo selected and will add a blank textfield for a label for the photo.
  
- 
- 
+ //look for global properties that are only used locally within methods.
  */
 
 
@@ -72,6 +72,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *photoView;
 @property (nonatomic, strong) IBOutlet NSData *photoData;
 @property (nonatomic, strong) IBOutlet UIImage *photo;
+@property (nonatomic, strong) IBOutlet UIImageView *cameraView;
+
 
 
 
@@ -108,7 +110,7 @@ UIActionSheet *pickerViewPopup;
     [super viewDidAppear:animated];
     if (self.selectedVehicle)
     {
-        self.title = [NSString stringWithFormat:@"Edit %@ ",self.selectedVehicle.name];
+        self.title = [NSString stringWithFormat:@"Edit Vehicle"];
     }
     else
     {
@@ -128,40 +130,41 @@ UIActionSheet *pickerViewPopup;
     }
     
 
-    CGFloat customToolbarHeight = 40;
+//    CGFloat customToolbarHeight = 40;
     self.photoView.frame = CGRectMake(0, 30, 40, 40);
     
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave  target:self action:@selector(saveButtonPressed)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
     ///TOOLBAR
-    self.mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,self.view.frame.size.height - customToolbarHeight , self.view.frame.size.width, customToolbarHeight) ];
-    self.mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    NSMutableArray *toolbarItems = [[NSMutableArray alloc] init];
-    
-    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(save:)]];
-    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
-    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
-    
-    //self.nameTextField.delegate = self;
-    [self.mainToolbar setItems:toolbarItems animated:NO];
+//    self.mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,self.view.frame.size.height - customToolbarHeight , self.view.frame.size.width, customToolbarHeight) ];
+//    self.mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+//    NSMutableArray *toolbarItems = [[NSMutableArray alloc] init];
+//    
+//    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(save:)]];
+//    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
+//    [toolbarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
+//    
+//    //self.nameTextField.delegate = self;
+//    [self.mainToolbar setItems:toolbarItems animated:NO];
     // [items release];
 //    [self.view addSubview:self.mainToolbar];
     
-    self.cameraToolbar = [UIToolbar new];
-    self.cameraToolbar.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-//    self.cameraToolbar.backgroundColor = [UIColor whiteColor];
-    self.cameraToolbar.barTintColor =[UIColor whiteColor];
-    self.cameraToolbar.frame = CGRectMake(0, 0, 60, 30);
+//    self.cameraToolbar = [UIToolbar new];
+//    self.cameraToolbar.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+////    self.cameraToolbar.backgroundColor = [UIColor whiteColor];
+//    self.cameraToolbar.barTintColor =[UIColor whiteColor];
+//    self.cameraToolbar.frame = CGRectMake(0, 0, 60, 30);
     
-    NSMutableArray *cameraItems = [[NSMutableArray alloc] init];
+//    NSMutableArray *cameraItems = [[NSMutableArray alloc] init];
+//    
+//    [cameraItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
     
-    [cameraItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
-    
-    [self.cameraToolbar setItems:cameraItems animated:NO];
+//    [self.cameraToolbar setItems:cameraItems animated:NO];
     CGFloat textFieldHeight = 50;
 
     
+    /// FREE ICON from http://www.visualpharm.com/free_icons.html
     
     
     ////////TOOLBAR///////
@@ -186,6 +189,7 @@ UIActionSheet *pickerViewPopup;
 //    self.propertyTableView.dataSource = self;
 //    [self.view addSubview:self.propertyTableView];
 
+    self.cameraView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera.png"]];
     
     self.specTextView = [UITextView new];
     self.specTextView.font = [UIFont systemFontOfSize:15];
@@ -417,12 +421,21 @@ if (self.selectedVehicle)
         }break;
         case Photo:{
             cell.textLabel.text = @"Add Photo";
+            
+
+            if (! self.photoView.image)
+            {
+                cell.accessoryView = self.cameraView;
+            }
+            else{
+                [self.photoView sizeToFit];
+                cell.accessoryView = self.photoView;
+            }
         
 //            cell.imageView.image = self.photoView.image;
-            [self.photoView sizeToFit];
-            cell.accessoryView = self.photoView;
-            [cell.contentView addSubview:self.cameraToolbar];
-            [cell.contentView bringSubviewToFront:self.cameraToolbar];
+
+//            [cell.contentView addSubview:self.cameraToolbar];
+//            [cell.contentView bringSubviewToFront:self.cameraToolbar];
 //            [cell.contentView addSubview:self.photoView];
 //            [cell.contentView bringSubviewToFront:self.photoView];
             

@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "28C8C16718A97E0F009231DA"
                BuildableName = "ServiceRecord.app"
-               BlueprintName = "ServiceRecord"
-               ReferencedContainer = "container:ServiceRecord.xcodeproj">
+               BlueprintName = "ChainLube"
+               ReferencedContainer = "container:ChainLube.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "28C8C18718A97E0F009231DA"
                BuildableName = "ServiceRecordTests.xctest"
                BlueprintName = "ServiceRecordTests"
-               ReferencedContainer = "container:ServiceRecord.xcodeproj">
+               ReferencedContainer = "container:ChainLube.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -44,8 +44,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28C8C16718A97E0F009231DA"
             BuildableName = "ServiceRecord.app"
-            BlueprintName = "ServiceRecord"
-            ReferencedContainer = "container:ServiceRecord.xcodeproj">
+            BlueprintName = "ChainLube"
+            ReferencedContainer = "container:ChainLube.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -63,8 +63,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28C8C16718A97E0F009231DA"
             BuildableName = "ServiceRecord.app"
-            BlueprintName = "ServiceRecord"
-            ReferencedContainer = "container:ServiceRecord.xcodeproj">
+            BlueprintName = "ChainLube"
+            ReferencedContainer = "container:ChainLube.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -81,8 +81,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28C8C16718A97E0F009231DA"
             BuildableName = "ServiceRecord.app"
-            BlueprintName = "ServiceRecord"
-            ReferencedContainer = "container:ServiceRecord.xcodeproj">
+            BlueprintName = "ChainLube"
+            ReferencedContainer = "container:ChainLube.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

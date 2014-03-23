@@ -188,7 +188,7 @@
     else
     {
         Record *a = self.sortedDate[indexPath.item];
-        
+        RecordPhoto *b = a.photos[0];
         
         if ( a.odometer.integerValue == 0 ){
             
@@ -205,8 +205,12 @@
         }
         
         // it should be a label
-        //        cell.accessoryView = [self.dateFormat stringFromDate:a.date];
-        self.photoView = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:a.image scale:[[UIScreen mainScreen] scale]]];
+        UILabel *dateLabel = [[UILabel alloc] init];
+        dateLabel.text = [NSString stringWithString:[self.dateFormat stringFromDate:a.date]];
+        [dateLabel sizeToFit];
+        cell.accessoryView = dateLabel;
+        
+        self.photoView = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:b.photo scale:[[UIScreen mainScreen] scale]]];
         cell.imageView.image = self.photoView.image;
         
         //UIImageView *cellImageView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:data[@"image"]]];
