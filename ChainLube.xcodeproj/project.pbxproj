@@ -13,6 +13,7 @@
 		2865B8EB18DD4A92007F8E7F /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865B8EA18DD4A92007F8E7F /* Record.m */; };
 		2865B8EE18DD4A93007F8E7F /* RecordPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865B8ED18DD4A93007F8E7F /* RecordPhoto.m */; };
 		2865B8F118DD4A93007F8E7F /* Vehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865B8F018DD4A93007F8E7F /* Vehicle.m */; };
+		2865B8F418E352B7007F8E7F /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865B8F318E352B7007F8E7F /* ImageViewController.m */; };
 		28C8903918B3984000F8D37A /* im26.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903818B3984000F8D37A /* im26.jpg */; };
 		28C8903B18B3984900F8D37A /* im16.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903A18B3984900F8D37A /* im16.jpg */; };
 		28C8903D18B3985800F8D37A /* im31.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28C8903C18B3985800F8D37A /* im31.jpg */; };
@@ -59,6 +60,8 @@
 		2865B8ED18DD4A93007F8E7F /* RecordPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordPhoto.m; sourceTree = "<group>"; };
 		2865B8EF18DD4A93007F8E7F /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
 		2865B8F018DD4A93007F8E7F /* Vehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vehicle.m; sourceTree = "<group>"; };
+		2865B8F218E352B7007F8E7F /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		2865B8F318E352B7007F8E7F /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		28C8903818B3984000F8D37A /* im26.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im26.jpg; path = ../../../Pictures/im26.jpg; sourceTree = "<group>"; };
 		28C8903A18B3984900F8D37A /* im16.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im16.jpg; path = ../../../Pictures/im16.jpg; sourceTree = "<group>"; };
 		28C8903C18B3985800F8D37A /* im31.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = im31.jpg; path = ../../../Pictures/im31.jpg; sourceTree = "<group>"; };
@@ -178,6 +181,8 @@
 				28C8904218B6867D00F8D37A /* ServiceViewController.m */,
 				28C8904718B6950000F8D37A /* RecordViewController.h */,
 				28C8904818B6950000F8D37A /* RecordViewController.m */,
+				2865B8F218E352B7007F8E7F /* ImageViewController.h */,
+				2865B8F318E352B7007F8E7F /* ImageViewController.m */,
 				28C8903718B3982600F8D37A /* images */,
 				28C8C18218A97E0F009231DA /* Images.xcassets */,
 				28C8C17F18A97E0F009231DA /* ServiceRecord.xcdatamodeld */,
@@ -331,6 +336,7 @@
 				28C8C17E18A97E0F009231DA /* AppDelegate.m in Sources */,
 				28C8C17A18A97E0F009231DA /* main.m in Sources */,
 				28C8904318B6867D00F8D37A /* ServiceViewController.m in Sources */,
+				2865B8F418E352B7007F8E7F /* ImageViewController.m in Sources */,
 				2865B8F118DD4A93007F8E7F /* Vehicle.m in Sources */,
 				28C8C1A218A982F5009231DA /* FeaturedViewController.m in Sources */,
 				28C8904018B39AE400F8D37A /* VehicleViewController.m in Sources */,

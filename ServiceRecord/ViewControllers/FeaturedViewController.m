@@ -141,7 +141,10 @@
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     
-    
+    cell.imageView.image = nil;
+    cell.accessoryView = nil;
+    cell.textLabel.text = nil;
+    cell.detailTextLabel.text = nil;
     
     Vehicle *a = self.vehicles[indexPath.row];
     

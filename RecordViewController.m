@@ -8,6 +8,7 @@
 
 #import "RecordViewController.h"
 #import "AppDelegate.h"
+#import "ImageViewController.h"
 //#import "HTAutocompleteManager.h"
 
 @interface RecordViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate>
@@ -51,6 +52,8 @@ enum Properties {
 };
 
 UIActionSheet *pickerViewPopup;
+
+
 
 
 @implementation RecordViewController
@@ -232,11 +235,14 @@ UIActionSheet *pickerViewPopup;
 //            [existingPhoto sizeToFit];
             //                existingPhoto.frame = CGRectMake(10,0,40,40);
             UITextField *newTextField = [UITextField new];
+            newTextField.frame = CGRectMake(0, 10, 150, 50);
             newTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
             newTextField.borderStyle = UITextBorderStyleRoundedRect;
             newTextField.font = [UIFont systemFontOfSize:15];
             newTextField.placeholder = @"Label";
             newTextField.autocorrectionType = UITextAutocorrectionTypeYes;
+            newTextField.returnKeyType = UIReturnKeyDone;
+            newTextField.delegate = self;
             if (b.label)
                 newTextField.text = b.label;
             [self.photoRecords addObject:@{@"photo":b.photo,@"label":newTextField}];
@@ -353,7 +359,10 @@ UIActionSheet *pickerViewPopup;
 
     }
 
-    
+    cell.imageView.image = nil;
+    cell.accessoryView = nil;
+    cell.textLabel.text = nil;
+    cell.detailTextLabel.text = nil;
     
     switch (indexPath.row) {
         case Task:{
@@ -407,6 +416,9 @@ UIActionSheet *pickerViewPopup;
                 cell.accessoryView = self.cameraView;
         }break;
         default:{
+            cell.textLabel.text = nil;
+            cell.imageView.image = nil;
+            cell.accessoryView = nil;
             long i = indexPath.row - PropertyCount;
             [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
                 if (idx == i){
@@ -502,14 +514,22 @@ UIActionSheet *pickerViewPopup;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     switch (indexPath.row) {
-        case Note:{
-            return 100.0;
+        case Task:{
+            return 60.0;
         }break;
-        case Photo:{
-            return 100.0;
+        case Date:{
+            return 60.0;
         }break;
+        case Odometer:{
+            return 60.0;
+        }break;
+        case Cost:{
+            return 60.0;
+        }break;
+        default:{
+            return 100;
+        }
     }
-    return 60;
 }
 
 
@@ -533,13 +553,21 @@ default:{
             
         default:{
             long i = indexPath.row - PropertyCount;
-            [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
-                if (idx == i){
-                    [self.photoRecords removeObjectAtIndex:idx];
-                    
-                    
-                }
-            }];
+            if (self.photoRecords.count > i)
+            {
+                [self.photoRecords removeObjectAtIndex:i];
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                
+
+            }
+//            [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
+//                if (idx == i){
+//                    [self.photoRecords removeObjectAtIndex:idx];
+//                    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//
+//                    
+//                }
+//            }];
         }break;
     }
 
@@ -607,8 +635,10 @@ default:{
                 if (idx == i){
 //                    UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:k[@"photo"] scale:[[UIScreen mainScreen] scale]]];
 //                    [existingPhoto sizeToFit];
-                    UITextField *m = k[@"label"];
-                    [m becomeFirstResponder];
+                    
+                    [self showFullscreen: i];
+//                    UITextField *m = k[@"label"];
+//                    [m becomeFirstResponder];
                 }
             }];
         }break;
@@ -647,22 +677,25 @@ default:{
 
         self.selectedRecord.vehicle = self.selectedVehicle;
         self.title = [NSString stringWithFormat:@"Edit Record: %@ ",self.taskTextField.text];
-        
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+
         if (self.photoRecords.count == 0) {
             [self.selectedRecord.photos enumerateObjectsUsingBlock:^(RecordPhoto *k, NSUInteger idx, BOOL *stop) {
-                AppDelegate *delegate = [UIApplication sharedApplication].delegate;
                 [delegate.managedObjectContext deleteObject:k];
-                NSError *error = nil;
-                if (![delegate.managedObjectContext save:&error]) {
-                    NSLog(@"Can't Delete! %@ %@", error, [error localizedDescription]);
-                    return;
-                }
-                
+
 
             }];
             
         }
         else{
+            //DELETE ALL PHOTO RECORDS
+            [self.selectedRecord.photos enumerateObjectsUsingBlock:^(RecordPhoto *k, NSUInteger idx, BOOL *stop) {
+                [delegate.managedObjectContext deleteObject:k];
+                
+                
+            }];
+
+            //CREATE NEW PHOTORECORDS
         [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger i, BOOL *stop) {
             
             UITextField *d = k[@"label"];
@@ -843,12 +876,22 @@ default:{
     //self.selectedVehicle.image = imageData;
     // UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 40)];
     // imageView.image = image;
-    self.photoView = [[UIImageView alloc]  initWithImage:self.photo ];
-    self.photoView.image = [self imageWithImage:self.photoView.image convertToSize:CGSizeMake(80, 80)];
-    [self.photoView sizeToFit];
+    self.photoView = [[UIImageView alloc]  initWithImage:self.photo];
+    self.photoView.image = [self imageWithImage:self.photoView.image convertToSize:CGSizeMake(self.photoView.image.size.width,self.photoView.image.size.height)];
+//    self.photoView.image = [self imageWithImage:self.photoView.image];
+//    [self.photoView sizeToFit];
     self.photoData = UIImagePNGRepresentation(self.photoView.image);
     UITextField *newTextField = [UITextField new];
-    [self.photoRecords addObject:@{@"photo":self.photoData,@"Label":newTextField}];
+    newTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    newTextField.borderStyle = UITextBorderStyleRoundedRect;
+    newTextField.font = [UIFont systemFontOfSize:15];
+    newTextField.placeholder = @"Label";
+    newTextField.autocorrectionType = UITextAutocorrectionTypeYes;
+    newTextField.returnKeyType = UIReturnKeyDone;
+    newTextField.delegate = self;
+    newTextField.frame = CGRectMake(0, 10, 150, 50);
+
+    [self.photoRecords addObject:@{@"photo":self.photoData,@"label":newTextField}];
 
     //    self.photoView.frame = CGRectMake(10,0,40,40);
     //    [self.view addSubview:self.photoView];
@@ -887,6 +930,17 @@ default:{
     UIGraphicsEndImageContext();
     return destImage;
 }
+//- (UIImage *)imageWithImage:(UIImage *)image {
+//    UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
+////    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+//    [image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//
+//    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    return destImage;
+//}
+
+
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     UIAlertView *alert;
     //NSLog(@"Image:%@", image);
@@ -906,7 +960,22 @@ default:{
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-
+-(void)showFullscreen:(NSInteger) i {
+        
+            if (self.photoRecords.count > i ){
+                NSDictionary *k = self.photoRecords[i];
+//            UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:k[@"photo"] scale:[[UIScreen mainScreen] scale]]];
+            UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:k[@"photo"]]];
+                 ImageViewController *ic = [ImageViewController new];
+                
+                ic.selectedImage = existingPhoto;
+                //    rc.selectedRecord = self.selectedVehicle.records[indexPath.item];
+                [self.navigationController pushViewController:ic animated:YES];
+                
+             
+            }
+    
+}
 
 
 - (void)didReceiveMemoryWarning

@@ -170,12 +170,12 @@ UIActionSheet *pickerViewPopup;
     ////////TOOLBAR///////
     
     
-    self.unitsSegment = [[UISegmentedControl alloc] initWithItems:@[@"Km",@"Mi"]];
+    self.unitsSegment = [[UISegmentedControl alloc] initWithItems:@[@"km",@"mi"]];
     self.unitsSegment.frame = CGRectMake(0, 10, 150, textFieldHeight);
     self.unitsSegment.selectedSegmentIndex = 0;
     [self.unitsSegment addTarget:self action:@selector(segmentedControlValueDidChange:) forControlEvents:UIControlEventValueChanged];
 
-    self.units = @"Km";
+    self.units = @"km";
 //    self.datePicker = [UIDatePicker new];
 //    [self.datePicker addTarget:self action:@selector(pickerChanged:) forControlEvents:UIControlEventValueChanged];
     
@@ -277,12 +277,12 @@ if (self.selectedVehicle)
 //    self.photoView.frame = CGRectMake(10,0,40,40);
 //    [self.view addSubview:self.photoView];
     }
-    if ([self.selectedVehicle.units  isEqual: @"Mi"])
+    if ([self.selectedVehicle.units  isEqual: @"mi"])
     {
         self.unitsSegment.selectedSegmentIndex = 1;
     
     }
-    else if ([self.selectedVehicle.units  isEqual: @"Km"]) {
+    else if ([self.selectedVehicle.units  isEqual: @"km"]) {
         self.unitsSegment.selectedSegmentIndex = 0;
        
 
@@ -375,6 +375,10 @@ if (self.selectedVehicle)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    cell.imageView.image = nil;
+    cell.accessoryView = nil;
+    cell.textLabel.text = nil;
+    cell.detailTextLabel.text = nil;
     switch (indexPath.row) {
         case Name:{
             cell.textLabel.text = @"Name";
@@ -481,10 +485,10 @@ if (self.selectedVehicle)
 {
     switch (segment.selectedSegmentIndex) {
         case 0:{
-            self.units = @"Km";
+            self.units = @"km";
             break;}
         case 1:{
-            self.units = @"Mi";
+            self.units = @"mi";
             break;}
     }
 }

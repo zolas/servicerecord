@@ -181,15 +181,23 @@
     //store vehicle latest odometer
     
     NSLog(@"%@",self.sortedDate);
-    
+    cell.imageView.image = nil;
+    cell.accessoryView = nil;
+    cell.textLabel.text = nil;
+    cell.detailTextLabel.text = nil;
     if  ([self.sortedDate count] == 0){
         
     }
     else
     {
         Record *a = self.sortedDate[indexPath.item];
-        RecordPhoto *b = a.photos[0];
-        
+        if (a.photos.count >0){
+            
+            RecordPhoto *b = a.photos[0];
+            self.photoView = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:b.photo scale:[[UIScreen mainScreen] scale]]];
+            cell.imageView.image = self.photoView.image;
+        }
+
         if ( a.odometer.integerValue == 0 ){
             
             [cell.textLabel setText:[NSString stringWithFormat:@"%@", a.task]];
@@ -210,8 +218,7 @@
         [dateLabel sizeToFit];
         cell.accessoryView = dateLabel;
         
-        self.photoView = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:b.photo scale:[[UIScreen mainScreen] scale]]];
-        cell.imageView.image = self.photoView.image;
+
         
         //UIImageView *cellImageView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:data[@"image"]]];
         
@@ -266,12 +273,15 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:alertView.tag inSection:0];
     if (buttonIndex == 1){
         NSLog(@"called my alert");
-        
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+
         Record *a = self.sortedDate[indexPath.item];
-        
+        //DELETE ALL PHOTO RECORDS
+        [a.photos enumerateObjectsUsingBlock:^(RecordPhoto *k, NSUInteger idx, BOOL *stop) {
+            [delegate.managedObjectContext deleteObject:k];
+        }];
         
         //        Record *a = self.selectedVehicle.records[indexPath.item];
-        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
         [delegate.managedObjectContext deleteObject:a];
         [delegate.managedObjectContext save:Nil];
         // Remove device from table view
