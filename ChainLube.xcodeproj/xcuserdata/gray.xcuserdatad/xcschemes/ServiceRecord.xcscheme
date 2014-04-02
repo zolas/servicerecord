@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "28C8C16718A97E0F009231DA"
-               BuildableName = "ServiceRecord.app"
+               BuildableName = "ChainLube.app"
                BlueprintName = "ChainLube"
                ReferencedContainer = "container:ChainLube.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28C8C16718A97E0F009231DA"
-            BuildableName = "ServiceRecord.app"
+            BuildableName = "ChainLube.app"
             BlueprintName = "ChainLube"
             ReferencedContainer = "container:ChainLube.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28C8C16718A97E0F009231DA"
-            BuildableName = "ServiceRecord.app"
+            BuildableName = "ChainLube.app"
             BlueprintName = "ChainLube"
             ReferencedContainer = "container:ChainLube.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28C8C16718A97E0F009231DA"
-            BuildableName = "ServiceRecord.app"
+            BuildableName = "ChainLube.app"
             BlueprintName = "ChainLube"
             ReferencedContainer = "container:ChainLube.xcodeproj">
          </BuildableReference>

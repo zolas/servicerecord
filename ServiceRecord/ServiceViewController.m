@@ -101,8 +101,8 @@
     NSMutableArray *toolbarVehicleItems = [[NSMutableArray alloc] init];
     
     
-    [toolbarVehicleItems addObject:[[UIBarButtonItem alloc] initWithTitle:self.selectedVehicle.name style:UIBarButtonItemStyleDone target:self action:@selector(settingsButtonPressed)]];
-    [toolbarVehicleItems addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"] style:UIBarButtonItemStyleDone target:self action:@selector(settingsButtonPressed)]];
+    [toolbarVehicleItems addObject:[[UIBarButtonItem alloc] initWithTitle:@"Edit Vehicle" style:UIBarButtonItemStyleDone target:self action:@selector(settingsButtonPressed)]];
+//    [toolbarVehicleItems addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"] style:UIBarButtonItemStyleDone target:self action:@selector(settingsButtonPressed)]];
     
     
     //[toolbarVehicleItems addObject:[[UIBarButtonItem alloc] initWithTitle:<#(NSString *)#> style:<#(UIBarButtonItemStyle)#> target:<#(id)#> action:<#(SEL)#> target:self action:@selector(topBuildsButtonPressed)]];

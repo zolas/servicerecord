@@ -193,7 +193,7 @@ UIActionSheet *pickerViewPopup;
     
     self.specTextView = [UITextView new];
     self.specTextView.font = [UIFont systemFontOfSize:15];
-    self.specTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
+//    self.specTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
     self.specTextView.layer.borderColor = ([[UIColor lightGrayColor] CGColor]);
     self.specTextView.layer.borderWidth = 0.5f;
     self.specTextView.layer.cornerRadius = 8.0f;
@@ -245,7 +245,7 @@ UIActionSheet *pickerViewPopup;
     
     
     self.noteTextView = [UITextView new];
-    self.noteTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
+//    self.noteTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
     // self.noteTextView.borderStyle = UITextBorderStyleRoundedRect;
     self.noteTextView.font = [UIFont systemFontOfSize:15];
     self.noteTextView.autocorrectionType = UITextAutocorrectionTypeYes;
@@ -256,6 +256,12 @@ UIActionSheet *pickerViewPopup;
     self.noteTextView.layer.cornerRadius = 8.0f;
     self.noteTextView.layer.masksToBounds = YES;
     self.noteTextView.frame = CGRectMake(0, 10, 150, 80);
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.noteTextView.frame = CGRectMake(0, 10, 300, 80);
+        self.nameTextField.frame = CGRectMake(0, 0, 300, textFieldHeight);
+        self.specTextView.frame = CGRectMake(0, 10, 300, 80);
+    }
 
 //    self.noteTextView.delegate = self;
 //    [self.view addSubview:self.nameTextField];
@@ -492,6 +498,11 @@ if (self.selectedVehicle)
             break;}
     }
 }
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.tableView reloadData];
+    
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     switch (indexPath.row) {
@@ -502,7 +513,7 @@ if (self.selectedVehicle)
             return 100.0;
         }break;
         case Photo:{
-            return 100.0;
+            return 120.0;
         }break;
     }
     return 60;

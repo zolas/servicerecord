@@ -11,7 +11,7 @@
 #import "ImageViewController.h"
 //#import "HTAutocompleteManager.h"
 
-@interface RecordViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate>
+@interface RecordViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate>
 @property (nonatomic, strong) NSArray *myMaintenanceArray;
 @property (nonatomic, strong) NSString *myTitle;
 //@property (nonatomic, strong) UITableView *vehicleTableView;
@@ -36,6 +36,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *cameraView;
 
 
+
 - (IBAction)cancel:(id)sender;
 
 @end
@@ -51,10 +52,10 @@ enum Properties {
     PropertyCount
 };
 
+
+
 UIActionSheet *pickerViewPopup;
-
-
-
+UIPopoverController *datePopover;
 
 @implementation RecordViewController
 
@@ -154,7 +155,7 @@ UIActionSheet *pickerViewPopup;
 
     
     self.taskTextField = [UITextField new];
-    self.taskTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+//    self.taskTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.taskTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.taskTextField.font = [UIFont systemFontOfSize:15];
     self.taskTextField.placeholder = @"Task";
@@ -168,7 +169,7 @@ UIActionSheet *pickerViewPopup;
     
     self.dateTextField = [UITextField new];
 //    self.dateTextField.delegate = self;
-    self.dateTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+//    self.dateTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.dateTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.dateTextField.font = [UIFont systemFontOfSize:15];
     self.dateTextField.placeholder = @"Date";
@@ -184,7 +185,7 @@ UIActionSheet *pickerViewPopup;
     
     
     self.odometerTextField = [UITextField new];
-    self.odometerTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+//    self.odometerTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.odometerTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.odometerTextField.font = [UIFont systemFontOfSize:15];
     self.odometerTextField.placeholder = @"Odometer";
@@ -194,7 +195,7 @@ UIActionSheet *pickerViewPopup;
     self.odometerTextField.frame = CGRectMake(0, 10, 150, textFieldHeight);
     
     self.costTextField = [UITextField new];
-    self.costTextField.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
+//    self.costTextField.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
     self.costTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.costTextField.font = [UIFont systemFontOfSize:15];
     self.costTextField.placeholder = @"Cost";
@@ -204,7 +205,7 @@ UIActionSheet *pickerViewPopup;
     self.costTextField.frame = CGRectMake(0, 10, 150, textFieldHeight);
     
     self.noteTextView = [UITextView new];
-    self.noteTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
+//    self.noteTextView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth;
    // self.noteTextView.borderStyle = UITextBorderStyleRoundedRect;
     self.noteTextView.font = [UIFont systemFontOfSize:15];
     self.noteTextView.autocorrectionType = UITextAutocorrectionTypeYes;
@@ -216,6 +217,11 @@ UIActionSheet *pickerViewPopup;
     self.noteTextView.layer.masksToBounds = YES;
     self.noteTextView.frame = CGRectMake(0, 10, 150, 80);
 
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.taskTextField.frame = CGRectMake(0, 10, 300, textFieldHeight);
+        self.noteTextView.frame = CGRectMake(0, 10, 300, 80);
+    }
 //    self.noteTextView.delegate = self;
 
 
@@ -235,7 +241,12 @@ UIActionSheet *pickerViewPopup;
 //            [existingPhoto sizeToFit];
             //                existingPhoto.frame = CGRectMake(10,0,40,40);
             UITextField *newTextField = [UITextField new];
-            newTextField.frame = CGRectMake(0, 10, 150, 50);
+               if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                   newTextField.frame = CGRectMake(0, 10, 300, 50);
+               }else{
+                       newTextField.frame = CGRectMake(0, 10, 150, 50);
+
+                   }
             newTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
             newTextField.borderStyle = UITextBorderStyleRoundedRect;
             newTextField.font = [UIFont systemFontOfSize:15];
@@ -320,16 +331,28 @@ UIActionSheet *pickerViewPopup;
 //    self.dateTextField.text = dateFormat strin;
 //    self.datePicker.text = [dateFormat stringFromDate:self.datePicker.date];
 
+     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+         [datePopover dismissPopoverAnimated:YES ];
+         
+     }else{
+         [pickerViewPopup resignFirstResponder];
+         //    self.dateTextField.text = [NSString stringWithFormat:@"%@", self.datePicker.date];
+         [pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+     }
     self.dateTextField.text = [self.dateFormat stringFromDate:self.datePicker.date];
     
-    [pickerViewPopup resignFirstResponder];
-//    self.dateTextField.text = [NSString stringWithFormat:@"%@", self.datePicker.date];
-    [pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+
 }
 
 -(void)cancelButtonPressed:(id)sender{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [datePopover dismissPopoverAnimated:YES ];
+        
+    }else{
+
     [pickerViewPopup dismissWithClickedButtonIndex:0 animated:YES];
     [pickerViewPopup resignFirstResponder];
+    }
 }
 
 -(void)doneButtonPressed{
@@ -368,7 +391,6 @@ UIActionSheet *pickerViewPopup;
         case Task:{
             cell.textLabel.text = @"Task";
             cell.accessoryView = self.taskTextField;
-            cell.imageView.image = nil;
 
 //            [cell.contentView addSubview:self.taskTextField];
 //            [cell.contentView bringSubviewToFront:self.taskTextField];
@@ -376,7 +398,6 @@ UIActionSheet *pickerViewPopup;
         case Date:{
             cell.textLabel.text = @"Date";
             cell.accessoryView = self.dateTextField;
-            cell.imageView.image = nil;
 
 //            [cell.contentView addSubview:self.dateTextField];
 //            [cell.contentView bringSubviewToFront:self.dateTextField];
@@ -384,7 +405,6 @@ UIActionSheet *pickerViewPopup;
         case Odometer:{
             cell.textLabel.text = [NSString stringWithFormat:@"Odometer (%@) ",self.selectedVehicle.units];
             cell.accessoryView = self.odometerTextField;
-            cell.imageView.image = nil;
 
 //            [cell.contentView addSubview:self.odometerTextField];
 //            [cell.contentView bringSubviewToFront:self.odometerTextField];
@@ -392,7 +412,6 @@ UIActionSheet *pickerViewPopup;
         case Cost:{
             cell.textLabel.text = @"Cost";
             cell.accessoryView = self.costTextField;
-            cell.imageView.image = nil;
 
 //            [cell.contentView addSubview:self.costTextField];
 //            [cell.contentView bringSubviewToFront:self.costTextField];
@@ -400,7 +419,6 @@ UIActionSheet *pickerViewPopup;
         case Note:{
             cell.textLabel.text = @"Note";
             cell.accessoryView = self.noteTextView;
-            cell.imageView.image = nil;
 
 //            [cell.contentView addSubview:self.noteTextView];
 //            [cell.contentView bringSubviewToFront:self.noteTextView];
@@ -416,9 +434,6 @@ UIActionSheet *pickerViewPopup;
                 cell.accessoryView = self.cameraView;
         }break;
         default:{
-            cell.textLabel.text = nil;
-            cell.imageView.image = nil;
-            cell.accessoryView = nil;
             long i = indexPath.row - PropertyCount;
             [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
                 if (idx == i){
@@ -582,39 +597,14 @@ default:{
         }break;
         case Date:{
             
-            pickerViewPopup = [[UIActionSheet alloc] initWithTitle:@"Date" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-            [pickerViewPopup becomeFirstResponder];
-            self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
-            self.datePicker.datePickerMode = UIDatePickerModeDate;
-            self.datePicker.hidden = NO;
-            self.datePicker.date = [NSDate date];
+            [self showDatePicker];
             
-            UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-            pickerToolbar.barStyle = UIBarStyleDefault;
-            [pickerToolbar sizeToFit];
-            
-            NSMutableArray *barItems = [[NSMutableArray alloc] init];
-            
+           
+//            [self.view addSubview:pickerViewPopup];
 
-            UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
-            [barItems addObject:cancelBtn];
-            
-            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-            [barItems addObject:flexSpace];
-            
-            UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
-            [barItems addObject:doneBtn];
-            
+//            [pickerViewPopup setBounds:CGRectMake(0,0,320,500)];
+            NSLog(@"size: width:%f height:%f", self.view.frame.size.width, self.view.frame.size.height);
 
-            
-            [pickerToolbar setItems:barItems animated:YES];
-            
-            [pickerViewPopup addSubview:pickerToolbar];
-            [pickerViewPopup addSubview:self.datePicker];
-            [pickerViewPopup showInView:self.view];
-            [pickerViewPopup setBounds:CGRectMake(0,0,320, 464)];
-
-            
         }break;
         case Cost:{
             [self.costTextField becomeFirstResponder];
@@ -644,6 +634,106 @@ default:{
         }break;
     }
 }
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.tableView reloadData];
+
+}
+-(void) showDatePicker
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIViewController *popoverContent = [[UIViewController alloc]init];
+        
+        UIView *popoverView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 300)];
+        
+//        [popoverView setBackgroundColor:[UIColor RMBColor:@"b"]];
+        self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+        //            self.datePicker = [[UIDatePicker alloc] init];
+        self.datePicker.datePickerMode = UIDatePickerModeDate;
+        self.datePicker.hidden = NO;
+        self.datePicker.date = [NSDate date];
+        UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+        
+        
+        pickerToolbar.barStyle = UIBarStyleDefault;
+        [pickerToolbar sizeToFit];
+        
+        NSMutableArray *barItems = [[NSMutableArray alloc] init];
+        
+        
+        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
+        [barItems addObject:cancelBtn];
+        
+//        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+//        [barItems addObject:flexSpace];
+        
+        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
+        [barItems addObject:doneBtn];
+        [pickerToolbar setItems:barItems animated:YES];
+
+
+        //            pickerViewPopup.bounds =
+        
+        popoverContent.view = popoverView;
+        [popoverView addSubview:pickerToolbar];
+        [popoverView addSubview:self.datePicker];
+        
+        popoverContent.preferredContentSize = CGSizeMake(300, 300);
+        
+        datePopover =[[UIPopoverController alloc] initWithContentViewController:popoverContent];
+        
+        [datePopover presentPopoverFromRect:self.dateTextField.frame inView:self.dateTextField.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES ];
+        
+        [datePopover setDelegate:self];
+        
+
+        
+    }else {
+        
+        pickerViewPopup = [[UIActionSheet alloc] initWithTitle:@"Date" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [pickerViewPopup becomeFirstResponder];
+        self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+        //            self.datePicker = [[UIDatePicker alloc] init];
+        self.datePicker.datePickerMode = UIDatePickerModeDate;
+        self.datePicker.hidden = NO;
+        self.datePicker.date = [NSDate date];
+        //            pickerViewPopup.bounds = CGRectMake(0,0,320, 500);
+        
+        
+        UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        
+        
+        pickerToolbar.barStyle = UIBarStyleDefault;
+        [pickerToolbar sizeToFit];
+        
+        NSMutableArray *barItems = [[NSMutableArray alloc] init];
+        
+        
+        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
+        [barItems addObject:cancelBtn];
+        
+        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        [barItems addObject:flexSpace];
+        
+        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
+        [barItems addObject:doneBtn];
+        
+        
+        
+        [pickerToolbar setItems:barItems animated:YES];
+        [pickerViewPopup setBounds:CGRectMake(0,0,self.view.frame.size.width, 500)];
+        
+        [pickerViewPopup addSubview:pickerToolbar];
+        [pickerViewPopup addSubview:self.datePicker];
+        
+        
+        [pickerViewPopup showInView:self.view];
+
+        
+    }
+
+   }
+
 
 -(void)saveButtonPressed{
     

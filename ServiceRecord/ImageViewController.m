@@ -25,7 +25,10 @@
     }
     return self;
 }
-
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self viewDidLoad];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
