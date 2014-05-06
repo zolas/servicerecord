@@ -5,48 +5,8 @@
 //  Created by Gray on 2/18/2014.
 //  Copyright (c) 2014 Black Magma Inc. All rights reserved.
 //
-/*
- Text fields are too narrow
- What's the relevance to the name vs spec
- touch cell to select UITextField
- When done with DatePicker nothing should be in focus. 
- Make it so that when I click save it pops the user back to the list of vehicles.
- Work on the camera choices
- Add label to the camera icon that says: "Add a photo" - make cell selectable.
- Note section for the vehicle for tire specs or anything like that.
- Be friendlier in errors "Invalid entry!" is scary.
- When user clicks done on the keyboard, the keyboard should hide. Delegate for UITextfield that has that method.
- Draw border around UITextView for notes.
- Put done and cancel on opposite sides of UIDatePicker instead of together.
- w
- Photo is kind of small, can I make it bigggggger!!!?!?!
- Display dates for records in service view.
- Have a list of services to pick from
- To go back after you add a record.
- Organize records according to date. Should be latest records be on top instead of FIFO.
- Bug rotates picture 90 degrees if taken in portrait mode.
- Scale the picture to fit cell size. Make it bigger. that's what she said! 
- Can you confirm delete? ! !? ! ?! ?! ?! ?! !? ! !? ?!? ! ! 
- # Kill user so there won't be any complaints.
- when adding a new vehicle odometer goes down to zero. Don't display odometer if it's zero.
- 
- 
- #The miles/km can be a simple popup in the vehicle odometer settings. You click on the odometer settings for the vehicle and it asks you miles or km at which point everything gets converted between imperial and metric for all records. 
- #It can also be a slider between miles - km inside the odometer cell. 
- # Or it can be two buttons on the right hand side of the cell. One selected and one deselected with labels of km | miles.
- # Or it can be a units cell/attribute that allows you to select between L/km, Gallon/mi, etc... as evident in MPG.
- 
- #Change  model to vehicle specs.
- #Remove odometer from vehicle settings and remove year from vehicle settings.
- #make cells bigger
-  # Units still doesn't save or work
- # Image needs to be high res and work on import/export.
- 
- Modified core data to include a one to many relationship between a new entity <photorecords> and records. Will add a cell for each photo selected and will add a blank textfield for a label for the photo.
- 
- //look for global properties that are only used locally within methods.
- */
 
+ 
 
 
 #import "VehicleViewController.h"
