@@ -697,7 +697,7 @@ default:{
         self.datePicker.datePickerMode = UIDatePickerModeDate;
         self.datePicker.hidden = NO;
         self.datePicker.date = [NSDate date];
-        //            pickerViewPopup.bounds = CGRectMake(0,0,320, 500);
+//        pickerViewPopup.bounds = CGRectMake(0,0,320, 500);
         
         
         UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
@@ -721,14 +721,17 @@ default:{
         
         
         [pickerToolbar setItems:barItems animated:YES];
-        [pickerViewPopup setBounds:CGRectMake(0,0,self.view.frame.size.width, 500)];
+        [pickerViewPopup showInView:self.view];
+//        [pickerViewPopup setBounds:CGRectMake(0,0,self.view.frame.size.width, 464)];
+        CGFloat datePickerHeight = self.datePicker.frame.size.height + pickerToolbar.frame.size.height;
+        [pickerViewPopup setFrame:(CGRectMake(0, self.view.frame.size.height - datePickerHeight , self.view.frame.size.width, datePickerHeight))];
         
         [pickerViewPopup addSubview:pickerToolbar];
         [pickerViewPopup addSubview:self.datePicker];
+//        [self.view addSubview:self.datePicker];
         
-        
-        [pickerViewPopup showInView:self.view];
-
+//        [pickerViewPopup showInView:self.view];
+//        [self.view addSubview:pickerViewPopup];
         
     }
 

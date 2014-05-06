@@ -50,6 +50,7 @@
 
 
 #import "VehicleViewController.h"
+#import "ImageSearchViewController.h"
 
 @interface VehicleViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate>
 
@@ -116,7 +117,13 @@ UIActionSheet *pickerViewPopup;
     {
     self.title = @"Add New Vehicle";
     }
-    
+    if (self.flickrImage)
+    {
+        self.photoView = self.flickrImage;
+        self.photoView.image = [self imageWithImage:self.photoView.image convertToSize:CGSizeMake(80, 80)];
+        [self.photoView sizeToFit];
+
+    }
     [self.tableView reloadData];
 }
 
@@ -283,6 +290,7 @@ if (self.selectedVehicle)
 //    self.photoView.frame = CGRectMake(10,0,40,40);
 //    [self.view addSubview:self.photoView];
     }
+
     if ([self.selectedVehicle.units  isEqual: @"mi"])
     {
         self.unitsSegment.selectedSegmentIndex = 1;
@@ -368,6 +376,7 @@ if (self.selectedVehicle)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     return PropertyCount;
+    
     //return [self.myVehicleArray count];
     
 }
@@ -709,7 +718,7 @@ if (self.selectedVehicle)
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Camera", @"Existing Photo", nil];
+                                          otherButtonTitles:@"Camera", @"Existing Photo", @"Flickr Search", nil];
 
     [alert show];
     
@@ -778,7 +787,12 @@ if (self.selectedVehicle)
             //                                              otherButtonTitles:nil];
             //        [alert show];
         }
-        
+        else if (buttonIndex == 3){
+            ImageSearchViewController *is = [ImageSearchViewController new];
+            is.vehicleDelegate = self;
+            [self.navigationController pushViewController:is animated:YES];
+
+        }
     }
 
 

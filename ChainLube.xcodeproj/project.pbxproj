@@ -37,6 +37,7 @@
 		28C8C19518A97E0F009231DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28C8C19318A97E0F009231DA /* InfoPlist.strings */; };
 		28C8C19718A97E0F009231DA /* ServiceRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8C19618A97E0F009231DA /* ServiceRecordTests.m */; };
 		28C8C1A218A982F5009231DA /* FeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8C1A118A982F5009231DA /* FeaturedViewController.m */; };
+		28F8ABA01916D83C00A373C7 /* ImageSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8AB9F1916D83C00A373C7 /* ImageSearchViewController.m */; };
 		28FEA71518C0ECBA00D1655E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FEA71418C0ECBA00D1655E /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,8 @@
 		28C8C19618A97E0F009231DA /* ServiceRecordTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceRecordTests.m; sourceTree = "<group>"; };
 		28C8C1A018A982F5009231DA /* FeaturedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeaturedViewController.h; path = ViewControllers/FeaturedViewController.h; sourceTree = "<group>"; };
 		28C8C1A118A982F5009231DA /* FeaturedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeaturedViewController.m; path = ViewControllers/FeaturedViewController.m; sourceTree = "<group>"; };
+		28F8AB9E1916D83C00A373C7 /* ImageSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSearchViewController.h; sourceTree = "<group>"; };
+		28F8AB9F1916D83C00A373C7 /* ImageSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSearchViewController.m; sourceTree = "<group>"; };
 		28FEA71418C0ECBA00D1655E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -183,6 +186,8 @@
 				28C8904818B6950000F8D37A /* RecordViewController.m */,
 				2865B8F218E352B7007F8E7F /* ImageViewController.h */,
 				2865B8F318E352B7007F8E7F /* ImageViewController.m */,
+				28F8AB9E1916D83C00A373C7 /* ImageSearchViewController.h */,
+				28F8AB9F1916D83C00A373C7 /* ImageSearchViewController.m */,
 				28C8903718B3982600F8D37A /* images */,
 				28C8C18218A97E0F009231DA /* Images.xcassets */,
 				28C8C17F18A97E0F009231DA /* ServiceRecord.xcdatamodeld */,
@@ -338,6 +343,7 @@
 				28C8904318B6867D00F8D37A /* ServiceViewController.m in Sources */,
 				2865B8F418E352B7007F8E7F /* ImageViewController.m in Sources */,
 				2865B8F118DD4A93007F8E7F /* Vehicle.m in Sources */,
+				28F8ABA01916D83C00A373C7 /* ImageSearchViewController.m in Sources */,
 				28C8C1A218A982F5009231DA /* FeaturedViewController.m in Sources */,
 				28C8904018B39AE400F8D37A /* VehicleViewController.m in Sources */,
 				28C8904918B6950000F8D37A /* RecordViewController.m in Sources */,
