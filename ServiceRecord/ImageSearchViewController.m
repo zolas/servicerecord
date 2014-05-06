@@ -34,7 +34,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"im31.jpg"]];
+    
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]){
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+//self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"im31.jpg"]];
     
     
     // float width = self.view.bounds.size.width;
@@ -42,12 +46,12 @@ self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage i
     
     //[self.label setFrame:CGRectMake(width-100,height-100, 100, 100)];
     
-  UILabel *labelSearch = [[UILabel alloc]initWithFrame:CGRectZero];
-  labelSearch.text = @"Search Flickr";
+  UILabel *labelSearch = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
+    labelSearch.text = @"Search Flickr";
   labelSearch.backgroundColor = [UIColor clearColor];
   labelSearch.textColor = [UIColor blackColor];
   [labelSearch sizeToFit];
-  labelSearch.center = CGPointMake(self.view.center.x,labelSearch.frame.size.height/2);
+//  labelSearch.center = CGPointMake(self.view.center.x,labelSearch.frame.size.height/2);
   labelSearch.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 //  labelSearch.center = (self.view.frame.size.width / 2, 22);
     //    [self.view addSubview:labelCategory];
@@ -60,12 +64,12 @@ self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage i
     self.searchPhraseTextField.keyboardType = UIKeyboardTypeDefault;
     self.searchPhraseTextField.returnKeyType = UIReturnKeyDone;
     self.searchPhraseTextField.delegate = self;
-    self.searchPhraseTextField.frame = CGRectMake(0, 0, 150, 50);
-
+    self.searchPhraseTextField.frame = CGRectMake(0, 30, self.view.frame.size.width, 60);
+    [self.view addSubview:self.searchPhraseTextField];
     
     UICollectionViewFlowLayout *collectionLayout= [[UICollectionViewFlowLayout alloc]init];
     
-    self.flickrResult = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, (self.view.frame.size.height - 40)) collectionViewLayout:collectionLayout];
+    self.flickrResult = [[UICollectionView alloc] initWithFrame:CGRectMake(90, 0, self.view.frame.size.width, (self.view.frame.size.height - 40)) collectionViewLayout:collectionLayout];
     collectionLayout.collectionView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
     collectionLayout.minimumInteritemSpacing = 15;
     // [collectionLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
@@ -92,17 +96,29 @@ self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage i
     
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    [self searchFlickr:textField.text];
+    [self.flickrResult reloadData];
+
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"textFieldShouldReturn:");
+    [self searchFlickr:textField.text];
+    [self.flickrResult reloadData];
+    
+    return YES;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
-    return 10;
+    return 1;
 }
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
     //return [self.collectionArray count];
-    return 10;
+    return self.flickrPhotos.count;
     
 }
 
@@ -112,6 +128,8 @@ self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage i
     
     //UIImageView *cellBgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[self.collectionArray[indexPath.section] objectAtIndex:indexPath.row]]];
     //recipeImageView.image = [UIImage imageNamed:[recipeImages[indexPath.section] objectAtIndex:indexPath.row]];
+    UIImageView *cellBgView =[[UIImageView alloc] initWithImage:self.flickrPhotos[indexPath.item]];
+    cell.backgroundView = cellBgView;
     return cell;
     
     
@@ -135,11 +153,9 @@ self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage i
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)view didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return NO;
-}
+
 - (void)searchFlickr:(NSString *)searchTerm {
+    self.flickrPhotos = [NSMutableArray new];
     searchTerm = [searchTerm stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *searchURL = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=15&format=json&nojsoncallback=1",flickrKey,searchTerm];
 //    NSString *searchURL = [Flickr flickrSearchURLForSearchTerm:term];
@@ -158,37 +174,35 @@ self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage i
             NSDictionary *resultParameters = [NSJSONSerialization JSONObjectWithData:jsonData
                                                                               options:kNilOptions
                                                                                 error:&error];
-            if(error != nil)
-            {
+            if(error != nil){
 //                completionBlock(term,nil,error);
-            }
-            else
-            {
+            }else{
                 NSString *status = resultParameters[@"stat"];
                 if ([status isEqualToString:@"fail"]) {
 //                    NSError  *error = [[NSError alloc] initWithDomain:@"FlickrSearch" code:0 userInfo:@{NSLocalizedFailureReasonErrorKey: resultParameters[@"message"]}];
 ////                    completionBlock(term, nil, error);
                 } else {
                     
-                    self.flickrPhotos = resultParameters[@"photos"][@"photo"];
-                    NSArray *objPhotos = resultParameters[@"photos"][@"photo"];
-                    NSMutableArray *flickrPhotos = [@[] mutableCopy];
-                    for(NSMutableDictionary *objPhoto in objPhotos)
-                    {
+//                    self.flickrPhotos = resultParameters[@"photos"][@"photo"];
+                    NSArray *resultPhotoArray = resultParameters[@"photos"][@"photo"];
+//                    NSMutableArray *flickrPhotos = [@[] mutableCopy];
+                    for(NSMutableDictionary *resultPhoto in resultPhotoArray){
 //                        FlickrPhoto *photo = [[FlickrPhoto alloc] init];
 //                        [self.flickrPhotos addObject: @{@"photoid": @"BlackMamba", @"farm" : @"im1.jpg", @"server" : @"dfd", @"secret" : @"sdfsd", @"Image": @"im.png", @"Thmbimg" : @"im3.jpg"}];
-//                        photo.farm = [objPhoto[@"farm"] intValue];
-//                        photo.server = [objPhoto[@"server"] intValue];
-//                        photo.secret = objPhoto[@"secret"];
-//                        photo.photoID = [objPhoto[@"id"] longLongValue];
-                        
+//                        photo.farm = [resultPhoto[@"farm"] intValue];
+//                        photo.server = [resultPhoto[@"server"] intValue];
+//                        photo.secret = resultPhoto[@"secret"];
+//                        photo.photoID = [resultPhoto[@"id"] longLongValue];
+                        NSString *size = @"m";
+                        NSString *photoURL = [NSString stringWithFormat:@"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg",[resultPhoto[@"farm"] intValue],[resultPhoto[@"server"] intValue],[resultPhoto[@"id"] longLongValue],resultPhoto[@"secret"],size];
+
 //                        NSString *searchURL = [Flickr flickrPhotoURLForFlickrPhoto:photo size:@"m"];
-                        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:searchURL]
+                        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoURL]
                                                                   options:0
                                                                     error:&error];
                         UIImage *image = [UIImage imageWithData:imageData];
 //                        photo.thumbnail = image;
-                        
+                        [self.flickrPhotos addObject:image];
 //                        [flickrPhotos addObject:photo];
                     }
                     
@@ -196,6 +210,8 @@ self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage i
                 }
             }
         }
+        [self.flickrResult reloadData];
+
     });
 
 }
