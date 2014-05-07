@@ -30,6 +30,15 @@
     }
     return self;
 }
+- (void)viewDidAppear:(BOOL)animated
+{
+if (self.flickrPhotos.count > 0)
+{
+    self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:self.flickrPhotos[0]];
+
+}
+    
+}
 
 - (void)viewDidLoad
 {
@@ -46,16 +55,9 @@
     
     //[self.label setFrame:CGRectMake(width-100,height-100, 100, 100)];
     
-  UILabel *labelSearch = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
-    labelSearch.text = @"Search Flickr";
-  labelSearch.backgroundColor = [UIColor clearColor];
-  labelSearch.textColor = [UIColor blackColor];
-  [labelSearch sizeToFit];
-//  labelSearch.center = CGPointMake(self.view.center.x,labelSearch.frame.size.height/2);
-  labelSearch.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    self.title = @"Search Flickr";
 //  labelSearch.center = (self.view.frame.size.width / 2, 22);
     //    [self.view addSubview:labelCategory];
-  [self.view addSubview:labelSearch];
     self.searchPhraseTextField = [UITextField new];
     self.searchPhraseTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.searchPhraseTextField.font = [UIFont systemFontOfSize:15];
@@ -64,16 +66,17 @@
     self.searchPhraseTextField.keyboardType = UIKeyboardTypeDefault;
     self.searchPhraseTextField.returnKeyType = UIReturnKeyDone;
     self.searchPhraseTextField.delegate = self;
-    self.searchPhraseTextField.frame = CGRectMake(0, 30, self.view.frame.size.width, 60);
+    self.searchPhraseTextField.frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
     [self.view addSubview:self.searchPhraseTextField];
     
     UICollectionViewFlowLayout *collectionLayout= [[UICollectionViewFlowLayout alloc]init];
     
-    self.flickrResult = [[UICollectionView alloc] initWithFrame:CGRectMake(90, 0, self.view.frame.size.width, (self.view.frame.size.height - 40)) collectionViewLayout:collectionLayout];
-    collectionLayout.collectionView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
+    self.flickrResult = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 60, self.view.frame.size.width, (self.view.frame.size.height - 60)) collectionViewLayout:collectionLayout];
+//    collectionLayout.collectionView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
+    collectionLayout.collectionView.backgroundColor = [UIColor whiteColor];
     collectionLayout.minimumInteritemSpacing = 15;
-    // [collectionLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    [collectionLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [collectionLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+//    [collectionLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     self.flickrResult.collectionViewLayout = collectionLayout;
     self.flickrResult.delegate = self;
     self.flickrResult.dataSource = self;
@@ -92,19 +95,20 @@
 }
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [ self.flickrResult reloadData];
+    [self.flickrResult reloadData];
     
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField{
-    [self searchFlickr:textField.text];
-    [self.flickrResult reloadData];
+//- (void)textFieldDidEndEditing:(UITextField *)textField{
+//    [self searchFlickr:self.searchPhraseTextField.text];
+//    [self.flickrResult reloadData];
 
-}
+//}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"textFieldShouldReturn:");
-    [self searchFlickr:textField.text];
-    [self.flickrResult reloadData];
+    [textField resignFirstResponder];
+
+    [self searchFlickr:self.searchPhraseTextField.text];
     
     return YES;
 }
@@ -130,6 +134,8 @@
     //recipeImageView.image = [UIImage imageNamed:[recipeImages[indexPath.section] objectAtIndex:indexPath.row]];
     UIImageView *cellBgView =[[UIImageView alloc] initWithImage:self.flickrPhotos[indexPath.item]];
     cell.backgroundView = cellBgView;
+    NSLog(@"E7 %@",[NSDate date]);
+
     return cell;
     
     
@@ -152,6 +158,10 @@
 }
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)view didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.flickrPhotos.count > 0)
+        self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:self.flickrPhotos[indexPath.item]];
+
+    
 }
 
 - (void)searchFlickr:(NSString *)searchTerm {
@@ -161,14 +171,16 @@
 //    NSString *searchURL = [Flickr flickrSearchURLForSearchTerm:term];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
+
+    NSTimeInterval time = [NSDate timeIntervalSinceReferenceDate];
     dispatch_async(queue, ^{
         NSError *error = nil;
+        NSLog(@"E0, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
         NSString *searchResult = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchURL] encoding:NSUTF8StringEncoding error:&error];
         if (error != nil) {
 //            completionBlock(term,nil,error);
-        }
-        else
-        {
+            NSLog(@"E1");
+        } else {
             // Parse the JSON Response
             NSData *jsonData = [searchResult dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *resultParameters = [NSJSONSerialization JSONObjectWithData:jsonData
@@ -176,13 +188,18 @@
                                                                                 error:&error];
             if(error != nil){
 //                completionBlock(term,nil,error);
+                NSLog(@"E2");
+
             }else{
                 NSString *status = resultParameters[@"stat"];
                 if ([status isEqualToString:@"fail"]) {
 //                    NSError  *error = [[NSError alloc] initWithDomain:@"FlickrSearch" code:0 userInfo:@{NSLocalizedFailureReasonErrorKey: resultParameters[@"message"]}];
 ////                    completionBlock(term, nil, error);
+                    NSLog(@"E3");
+
                 } else {
-                    
+                    NSLog(@"E4, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
+
 //                    self.flickrPhotos = resultParameters[@"photos"][@"photo"];
                     NSArray *resultPhotoArray = resultParameters[@"photos"][@"photo"];
 //                    NSMutableArray *flickrPhotos = [@[] mutableCopy];
@@ -197,23 +214,35 @@
                         NSString *photoURL = [NSString stringWithFormat:@"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg",[resultPhoto[@"farm"] intValue],[resultPhoto[@"server"] intValue],[resultPhoto[@"id"] longLongValue],resultPhoto[@"secret"],size];
 
 //                        NSString *searchURL = [Flickr flickrPhotoURLForFlickrPhoto:photo size:@"m"];
-                        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoURL]
-                                                                  options:0
-                                                                    error:&error];
+                        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoURL] options:0 error:&error];
                         UIImage *image = [UIImage imageWithData:imageData];
 //                        photo.thumbnail = image;
                         [self.flickrPhotos addObject:image];
 //                        [flickrPhotos addObject:photo];
                     }
-                    
+                    NSLog(@"E5, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
+
 //                    completionBlock(term,flickrPhotos,nil);
                 }
             }
         }
+        if (self.flickrPhotos.count > 0)
+            self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:self.flickrPhotos[0]];
+            
+        dispatch_async(dispatch_get_main_queue(),^{
         [self.flickrResult reloadData];
+        });
+        NSLog(@"E6, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
 
     });
 
+}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return CGSizeMake(0, 40);
+    }
+    return CGSizeMake(0, 40 + 20);
 }
 
 /*
