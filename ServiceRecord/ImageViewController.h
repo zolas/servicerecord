@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VehicleViewController.h"
 
 @interface ImageViewController : UIViewController
 @property (nonatomic) UIImageView *selectedImage;
+@property (nonatomic, weak) VehicleViewController *vehicleDelegate;
+
 @end

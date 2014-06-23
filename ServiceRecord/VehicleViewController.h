@@ -12,10 +12,6 @@
 
 
 @interface VehicleViewController : UITableViewController
-@property (nonatomic) Vehicle *selectedVehicle;
+@property (nonatomic) Vehicle *selectedVehicle; 
 @property (nonatomic) UIImageView *flickrImage;
-
-
-
-
 @end

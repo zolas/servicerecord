@@ -8,6 +8,7 @@
 
 #import "ImageSearchViewController.h"
 #import "VehicleViewController.h"
+#import "ImageViewController.h"
 
 #define flickrKey @"61426f3ba050d2fec1cfa17f9a71f95d"
 
@@ -15,267 +16,337 @@
 @interface ImageSearchViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate>
 @property (nonatomic, strong) UICollectionView *flickrResult;
 @property (nonatomic, strong) IBOutlet UITextField *searchPhraseTextField;
-@property (nonatomic, strong) NSMutableArray *flickrPhotos;
-
+@property (nonatomic, strong) NSString *searchTerm;
+@property (nonatomic, strong) NSMutableArray *flickrThumbPhotos;
+@property (nonatomic, strong) NSMutableArray *flickrDisplayPhotos;
+@property (nonatomic) NSInteger selectedCell;
+@property (nonatomic) UIActivityIndicatorView *indicator;
+@property (nonatomic) NSInteger flickrPage;
+@property (nonatomic) NSInteger flickrMaxPage;
+@property (nonatomic, strong) UIAlertView *alert;
 
 @end
 
 @implementation ImageSearchViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
     }
     return self;
 }
-- (void)viewDidAppear:(BOOL)animated
-{
-if (self.flickrPhotos.count > 0)
-{
-    self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:self.flickrPhotos[0]];
 
-}
+- (void)viewDidLoad {
     
-}
-
-- (void)viewDidLoad
-{
     [super viewDidLoad];
     
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)]){
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-//self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"im31.jpg"]];
     
+    UIInterpolatingMotionEffect *xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    xAxis.minimumRelativeValue = @-40;
+    xAxis.maximumRelativeValue = @40;
+    UIInterpolatingMotionEffect *yAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    yAxis.minimumRelativeValue = @-40;
+    yAxis.maximumRelativeValue = @40;
+    UIMotionEffectGroup *group = [[UIMotionEffectGroup alloc] init];
+    group.motionEffects = @[xAxis,yAxis];
     
-    // float width = self.view.bounds.size.width;
-    //  float height = self.view.bounds.size.height;
+    [self.alert addMotionEffect:group];
     
-    //[self.label setFrame:CGRectMake(width-100,height-100, 100, 100)];
+    self.flickrThumbPhotos = [NSMutableArray new];
+    self.flickrDisplayPhotos = [NSMutableArray new];
+
     
     self.title = @"Search Flickr";
-//  labelSearch.center = (self.view.frame.size.width / 2, 22);
-    //    [self.view addSubview:labelCategory];
+
     self.searchPhraseTextField = [UITextField new];
     self.searchPhraseTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.searchPhraseTextField.font = [UIFont systemFontOfSize:15];
-    self.searchPhraseTextField.placeholder = @"Search for Images";
+    self.searchPhraseTextField.placeholder = @"Search keyword";
     self.searchPhraseTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.searchPhraseTextField.keyboardType = UIKeyboardTypeDefault;
-    self.searchPhraseTextField.returnKeyType = UIReturnKeyDone;
+    self.searchPhraseTextField.returnKeyType = UIReturnKeySearch;
     self.searchPhraseTextField.delegate = self;
     self.searchPhraseTextField.frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
+    self.searchPhraseTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:self.searchPhraseTextField];
+    
+    [self.searchPhraseTextField becomeFirstResponder];
     
     UICollectionViewFlowLayout *collectionLayout= [[UICollectionViewFlowLayout alloc]init];
     
     self.flickrResult = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 60, self.view.frame.size.width, (self.view.frame.size.height - 60)) collectionViewLayout:collectionLayout];
-//    collectionLayout.collectionView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
+
     collectionLayout.collectionView.backgroundColor = [UIColor whiteColor];
-    collectionLayout.minimumInteritemSpacing = 15;
+    collectionLayout.minimumInteritemSpacing = 1;
+    collectionLayout.minimumLineSpacing = 1;
+    collectionLayout.itemSize = CGSizeMake(79, 79);
+    collectionLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [collectionLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-//    [collectionLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    
     self.flickrResult.collectionViewLayout = collectionLayout;
     self.flickrResult.delegate = self;
     self.flickrResult.dataSource = self;
-    //    UICollectionViewFlowLayout *collectionViewLayout2 = (UICollectionViewFlowLayout*)self.flickrResult.collectionViewLayout;
-    //    collectionViewLayout2.sectionInset = UIEdgeInsetsMake(20, 0, 20, 0);
     [self.flickrResult registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     self.flickrResult.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     [self.flickrResult registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     
-    
-    
-    
     [self.view addSubview:self.flickrResult];
     
-
-}
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self.flickrResult reloadData];
+    self.indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.indicator.color = self.navigationController.navigationBar.tintColor;
+    self.indicator.frame = CGRectMake(self.searchPhraseTextField.frame.size.width - 60, 10, 40.0, 40.0);
+    self.indicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin ;
+    [self.view addSubview:self.indicator];
     
 }
 
-//- (void)textFieldDidEndEditing:(UITextField *)textField{
-//    [self searchFlickr:self.searchPhraseTextField.text];
-//    [self.flickrResult reloadData];
+#pragma mark - UICollectionView method implementation
 
-//}
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    NSLog(@"textFieldShouldReturn:");
-    [textField resignFirstResponder];
-
-    [self searchFlickr:self.searchPhraseTextField.text];
-    
-    return YES;
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
-    return 1;
+    return 1 ;
 }
+
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    //return [self.collectionArray count];
-    return self.flickrPhotos.count;
-    
+    return self.flickrDisplayPhotos.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     
+        UIImageView *cellBgView =[[UIImageView alloc] initWithImage:self.flickrDisplayPhotos[indexPath.item][@"thumb"]];
+        cellBgView.contentMode = UIViewContentModeScaleAspectFill;
+        cellBgView.clipsToBounds = YES;
+        cell.backgroundView = cellBgView;
+        NSLog(@"E7 %@",[NSDate date]);
+        cell.layer.borderColor = nil;
+        cell.layer.borderWidth = 0.0f;
+        
+        if (self.selectedCell == indexPath.item){
+            cell.layer.borderColor = [UIColor redColor].CGColor;
+            cell.layer.borderWidth = 3.0f;
+        }
     
-    //UIImageView *cellBgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[self.collectionArray[indexPath.section] objectAtIndex:indexPath.row]]];
-    //recipeImageView.image = [UIImage imageNamed:[recipeImages[indexPath.section] objectAtIndex:indexPath.row]];
-    UIImageView *cellBgView =[[UIImageView alloc] initWithImage:self.flickrPhotos[indexPath.item]];
-    cell.backgroundView = cellBgView;
-    NSLog(@"E7 %@",[NSDate date]);
-
     return cell;
-    
-    
-    
-    
-    //    CGFloat i = indexPath.item / 10.0;
-    // cell.contentView.backgroundColor = [UIColor colorWithRed:i green:1.-i blue:0.2 alpha:1];
-    
-}
-#pragma mark - UICollectionViewDelegateFlowLayout
-
-- (CGSize)collectionView:(UICollectionView *)cv layout:(UICollectionViewLayout*)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    //if cv = ...
-    return CGSizeMake(80, 60);
 }
 
-- (UIEdgeInsets)collectionView: (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(10, 10, 10, 10);
-}
-#pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)view didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.flickrPhotos.count > 0)
-        self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:self.flickrPhotos[indexPath.item]];
-
+    
+    [self.searchPhraseTextField resignFirstResponder];
+    self.selectedCell = indexPath.item;
+    [self.flickrResult reloadData];
+    [self showFullscreen:indexPath.item];
     
 }
 
-- (void)searchFlickr:(NSString *)searchTerm {
-    self.flickrPhotos = [NSMutableArray new];
-    searchTerm = [searchTerm stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *searchURL = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=15&format=json&nojsoncallback=1",flickrKey,searchTerm];
-//    NSString *searchURL = [Flickr flickrSearchURLForSearchTerm:term];
+#pragma mark - Search method implementation
+
+- (void)searchFlickr {
+    [self.indicator startAnimating];
+    
+    NSString *escapedSearchTerm= [self.searchTerm stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *searchURL = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&sort=relevance&text=%@&per_page=36&page=%d&format=json&nojsoncallback=1",flickrKey,escapedSearchTerm,self.flickrPage ];
+    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-
+    
     NSTimeInterval time = [NSDate timeIntervalSinceReferenceDate];
     dispatch_async(queue, ^{
         NSError *error = nil;
         NSLog(@"E0, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
         NSString *searchResult = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchURL] encoding:NSUTF8StringEncoding error:&error];
         if (error != nil) {
-//            completionBlock(term,nil,error);
             NSLog(@"E1");
         } else {
-            // Parse the JSON Response
             NSData *jsonData = [searchResult dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *resultParameters = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                              options:kNilOptions
-                                                                                error:&error];
+                                                                             options:kNilOptions
+                                                                               error:&error];
             if(error != nil){
-//                completionBlock(term,nil,error);
+                //                completionBlock(term,nil,error);
                 NSLog(@"E2");
-
+                
             }else{
                 NSString *status = resultParameters[@"stat"];
                 if ([status isEqualToString:@"fail"]) {
-//                    NSError  *error = [[NSError alloc] initWithDomain:@"FlickrSearch" code:0 userInfo:@{NSLocalizedFailureReasonErrorKey: resultParameters[@"message"]}];
-////                    completionBlock(term, nil, error);
                     NSLog(@"E3");
-
+                    
                 } else {
                     NSLog(@"E4, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
-
-//                    self.flickrPhotos = resultParameters[@"photos"][@"photo"];
+                    
                     NSArray *resultPhotoArray = resultParameters[@"photos"][@"photo"];
-//                    NSMutableArray *flickrPhotos = [@[] mutableCopy];
-                    for(NSMutableDictionary *resultPhoto in resultPhotoArray){
-//                        FlickrPhoto *photo = [[FlickrPhoto alloc] init];
-//                        [self.flickrPhotos addObject: @{@"photoid": @"BlackMamba", @"farm" : @"im1.jpg", @"server" : @"dfd", @"secret" : @"sdfsd", @"Image": @"im.png", @"Thmbimg" : @"im3.jpg"}];
-//                        photo.farm = [resultPhoto[@"farm"] intValue];
-//                        photo.server = [resultPhoto[@"server"] intValue];
-//                        photo.secret = resultPhoto[@"secret"];
-//                        photo.photoID = [resultPhoto[@"id"] longLongValue];
-                        NSString *size = @"m";
-                        NSString *photoURL = [NSString stringWithFormat:@"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg",[resultPhoto[@"farm"] intValue],[resultPhoto[@"server"] intValue],[resultPhoto[@"id"] longLongValue],resultPhoto[@"secret"],size];
-
-//                        NSString *searchURL = [Flickr flickrPhotoURLForFlickrPhoto:photo size:@"m"];
-                        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoURL] options:0 error:&error];
-                        UIImage *image = [UIImage imageWithData:imageData];
-//                        photo.thumbnail = image;
-                        [self.flickrPhotos addObject:image];
-//                        [flickrPhotos addObject:photo];
+                    if (resultPhotoArray.count > 0){
+                        if (self.flickrMaxPage == 0) self.flickrMaxPage = [resultParameters[@"photos"][@"pages"] integerValue];
+                        for(NSMutableDictionary *resultPhoto in resultPhotoArray){
+                            NSString *photoSizes = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.getsizes&api_key=%@&photo_id=%lld&format=json&nojsoncallback=1",flickrKey,[resultPhoto[@"id"] longLongValue]];
+                            NSString *sizeResult = [NSString stringWithContentsOfURL:[NSURL URLWithString:photoSizes] encoding:NSUTF8StringEncoding error:&error];
+                            if (error != nil) {
+                                //            completionBlock(term,nil,error);
+                                NSLog(@"E1");
+                            } else {
+                                
+                                
+                                NSData *jsonData = [sizeResult dataUsingEncoding:NSUTF8StringEncoding];
+                                NSDictionary *resultSizeParameters = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+                                
+                                if (error != nil) {
+                                    //            completionBlock(term,nil,error);
+                                    NSLog(@"E1");
+                                } else {
+                                    if ([resultSizeParameters[@"stat"]  isEqual: @"ok"]){
+                                        NSArray *resultPhotoSizeArray = resultSizeParameters[@"sizes"][@"size"];
+                                        __block NSString *photoLargeURL = [NSString new];
+                                        __block NSString *photoThumbURL = [NSString new];
+                                        
+                                        //check if photo is landscape or portrait.
+                                        __block int smallWidth = 0;
+                                        __block int bigWidth = 0;
+                                        __block int maxBigWidth = 1610;
+                                        __block int minBigWidth = 330;
+                                        
+                                        
+                                        [resultPhotoSizeArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+                                            
+                                            int maxSmallWidth = 250;
+                                            if ([obj[@"label"]  isEqual: @"Large"]){
+                                                photoLargeURL = obj[@"source"];
+                                                bigWidth = -1;
+                                            }else if ([obj[@"label"]  isEqual: @"Thumbnail"]){                                 photoThumbURL = obj[@"source"];
+                                                smallWidth = -1;
+                                            }else if (smallWidth == 0 && [obj[@"width"] integerValue ]< maxSmallWidth ){
+                                                photoThumbURL = obj[@"source"];
+                                                smallWidth = [obj[@"width"] integerValue];
+                                            }else if (smallWidth > 0 && [obj[@"width"] integerValue ]< smallWidth ){
+                                                photoThumbURL = obj[@"source"];
+                                                smallWidth = [obj[@"width"] integerValue];
+                                            }else if (bigWidth == 0 && [obj[@"width"] integerValue ]> minBigWidth ){
+                                                photoLargeURL = obj[@"source"];
+                                                bigWidth = [obj[@"width"] integerValue];
+                                            }else if (bigWidth > 0 && maxBigWidth > [obj[@"width"] integerValue ] && [obj[@"width"] integerValue ] > bigWidth ){
+                                                photoLargeURL = obj[@"source"];
+                                                bigWidth = [obj[@"width"] integerValue];
+                                                
+                                            }
+                                        }];
+                                        
+                                        if (! [photoThumbURL isEqual: [NSNull null]] || ! [photoLargeURL isEqual: [NSNull null]]){
+                                            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoThumbURL] options:0 error:&error];
+                                            if (error == nil) {
+                                                
+                                                UIImage *image = [UIImage imageWithData:imageData];
+                                                [self.flickrThumbPhotos addObject:@{@"thumb":image,@"bigphotoURL":photoLargeURL}];
+                                            }
+                                            else{
+                                                NSLog(@"Thumb Lost = %@ Large Lost= %@",photoThumbURL,photoLargeURL);
+                                            }
+                                            
+                                            
+                                        }else {
+                                            //throw error
+                                        }
+                                    }}}
+                            
+                            NSLog(@"E5, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
+                            
+                        }dispatch_async(dispatch_get_main_queue(),^{
+                            [self.indicator stopAnimating];
+                            self.flickrDisplayPhotos = self.flickrThumbPhotos;
+                            [self.flickrResult reloadData];
+                            if (self.flickrPage > 1) {
+                                [UIView animateWithDuration:0.2 animations:^{
+                                    self.flickrResult.contentOffset = CGPointMake(0, self.flickrResult.contentOffset.y + 70);
+                                }];
+                            }
+                        });}
+                    else{
+                        dispatch_async(dispatch_get_main_queue(),^{
+                        
+                        self.alert = [[UIAlertView new] initWithTitle:@"Flickr is not available at this time"
+                                                                        message:nil
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Cancel"
+                                                              otherButtonTitles:nil];
+                        [self.alert show];
+                        [self.indicator stopAnimating];
+                        });
                     }
-                    NSLog(@"E5, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
-
-//                    completionBlock(term,flickrPhotos,nil);
                 }
             }
         }
-        if (self.flickrPhotos.count > 0)
-            self.vehicleDelegate.flickrImage = [[UIImageView alloc] initWithImage:self.flickrPhotos[0]];
-            
-        dispatch_async(dispatch_get_main_queue(),^{
-        [self.flickrResult reloadData];
-        });
-        NSLog(@"E6, %.1f ms", (time-[NSDate timeIntervalSinceReferenceDate])*1000);
-
     });
-
 }
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (section == 0) {
-        return CGSizeMake(0, 40);
+    if (buttonIndex == 0){
+        //        [self.navigationController popViewControllerAnimated:YES];
     }
-    return CGSizeMake(0, 40 + 20);
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    if (self.indicator.isAnimating) return;
+    
+    if (self.flickrMaxPage > self.flickrPage) {
+        if (self.flickrResult.contentOffset.y > (self.flickrResult.contentSize.height - self.view.frame.size.height - 80)){
+                self.flickrPage ++;
+                [self searchFlickr];
+        }
+    }
 }
 
-/*
- 
- self.myNewBuildArray = @[
- @{@"photoid": @"BlackMamba", @"farm" : @"im1.jpg", @"server" : @"dfd", @"secret" : "sdfsd", @"Image": @"im.png", @"Thmbimg" : @"im3.jpg"},
- @{@"name": @"Cphynx", @"image" : @"im2.jpg"},
- @{@"name": @"Croku", @"image" : @"im3.jpg"},
- @{@"name": @"DezyMu", @"image" : @"im4.jpg"},
- @{@"name": @"mikaL", @"image" : @"im5.jpg"},
- @{@"name": @"Stanche", @"image" : @"im6.jpg"},
- @{@"name": @"glenReeves", @"image" : @"im7.jpg"},
- @{@"name": @"wrinok", @"image" : @"im8.jpg"},
- @{@"name": @"subrest", @"image" : @"im9.jpg"},
- @{@"name": @"moskann", @"image" : @"im10.jpg"},
- @{@"name": @"catylist", @"image" : @"im11.jpg"},
- @{@"name": @"barpokil", @"image" : @"im12.jpg"},
- @{@"name": @"thecayotee", @"image" : @"im13.jpg"},
- @{@"name": @"thecayotee2", @"image" : @"im14.jpg"},
- ];
+-(void)showFullscreen:(NSInteger) i {
 
-*/
+    if (self.flickrDisplayPhotos.count >= i){
+        NSError *error = nil;
+        ImageViewController *ic = [ImageViewController new];
+        
+        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.flickrDisplayPhotos[i][@"bigphotoURL"]] options:0 error:&error];
+        
+        if (error == nil){
+            UIImage *image = [UIImage imageWithData:imageData];
+            ic.selectedImage = [[UIImageView alloc] initWithImage:image];
+            ic.vehicleDelegate = self.vehicleDelegate;
+            [self.navigationController pushViewController:ic animated:YES];
+        }else{
+            self.alert = [[UIAlertView new] initWithTitle:@"Flickr Image is not available at this time"
+                                                            message:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [self.alert show];
+        }
+    }
+}
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if (self.indicator.isAnimating) return;
+    [self.flickrResult reloadData];
+    
 }
-*/
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"textFieldShouldReturn:");
+    [textField resignFirstResponder];
+    self.selectedCell = -1;
+    self.flickrPage = 1;
+    self.flickrMaxPage = 0;
+    self.flickrThumbPhotos = [NSMutableArray new];
+    self.searchTerm = self.searchPhraseTextField.text;
+    
+    [self searchFlickr];
+    
+    return YES;
+}
+
+- (void)didReceiveMemoryWarning{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 
 @end

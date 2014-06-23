@@ -10,6 +10,8 @@
 #import "ServiceViewController.h"
 
 @interface RecordViewController : UITableViewController
+
 @property (nonatomic) Vehicle *selectedVehicle;
 @property (nonatomic) Record *selectedRecord;
+
 @end

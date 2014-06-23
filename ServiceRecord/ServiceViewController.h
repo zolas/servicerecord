@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ServiceViewController : UITableViewController
+
 @property (nonatomic) Vehicle *selectedVehicle;
+
 @end
