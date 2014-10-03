@@ -11,5 +11,6 @@
 @interface ServiceViewController : UITableViewController
 
 @property (nonatomic) Vehicle *selectedVehicle;
+@property (nonatomic) NSArray *selectedRecords;
 
 @end

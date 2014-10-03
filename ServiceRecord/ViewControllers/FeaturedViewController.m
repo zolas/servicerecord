@@ -11,12 +11,17 @@
 #import "VehicleViewController.h"
 #import "AppDelegate.h"
 #import "ServiceViewController.h"
+#import <MessageUI/MessageUI.h>
+#import "NSManagedObject+Extras.h"
 
 
-@interface FeaturedViewController () 
+
+@interface FeaturedViewController () <MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *vehicles;
+@property (nonatomic, strong) NSMutableArray *vehicleThumbs;
 
+@property (nonatomic, strong) NSMutableArray *shareImageData;
 @end
 
 @implementation FeaturedViewController
@@ -39,10 +44,26 @@
     NSSortDescriptor *sortByName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     [fetchRequest setSortDescriptors:@[sortByName]];
     self.vehicles = [[delegate.managedObjectContext executeFetchRequest:fetchRequest error:nil] mutableCopy];
+    self.vehicleThumbs = [NSMutableArray new];
+    [self updateVehicleThumbs];
+    
+
+
     
     [self.tableView reloadData];
 }
-
+- (void)updateVehicleThumbs{
+    [self.vehicles enumerateObjectsUsingBlock:^(Vehicle *v, NSUInteger idxVehicle, BOOL *stop) {
+        if (v.image != Nil){
+            UIImage *image = [self imageWithImage:[UIImage imageWithData:v.image scale:1.0] convertToSize:CGSizeMake(120,120)]; // Change size to match aspect ratio
+            [self.vehicleThumbs addObject:image];
+        }
+        else
+            [self.vehicleThumbs addObject:[NSNull null]];
+        
+    }];
+    
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -59,6 +80,8 @@
     
     [super viewDidLoad];
     
+    self.shareImageData = [NSMutableArray new];
+    
     //Interpolating Motion Effect Group
     UIInterpolatingMotionEffect *xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
     xAxis.minimumRelativeValue = @-40;
@@ -73,7 +96,10 @@
     
     // Add vehicle button on Navigation bar
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd  target:self action:@selector(addButtonPressed)];
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose  target:self action:@selector(sendMailPressed)];
     self.navigationItem.rightBarButtonItem = addButton;
+    self.navigationItem.leftBarButtonItem = shareButton;
+    
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -115,8 +141,12 @@
     
     
     //Add vehicle image to the cell
-    cell.imageView.image = [UIImage imageWithData:a.image scale:[[UIScreen mainScreen] scale]];
-    
+    cell.imageView.image = nil;
+    if (self.vehicleThumbs.count >indexPath.item){
+        if ([self.vehicleThumbs[indexPath.item] isEqual:[NSNull null]] || [self.vehicleThumbs[indexPath.item] isEqual:nil]){}
+        else
+            cell.imageView.image = self.vehicleThumbs[indexPath.item];
+    }
     return cell;
 }
 
@@ -135,7 +165,6 @@
                                               otherButtonTitles:@"Ok", nil];
         alert.tag = indexPath.item;
         [alert show];
-         
         //Reload the row if it is being edited. (Maybe better to do it in the didDismiss method)
         if (tableView.isEditing){
             [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -161,7 +190,17 @@
         [delegate saveContext];
         
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self viewDidAppear:YES];
+        
     }
+}
+
+- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size {
+    UIGraphicsBeginImageContextWithOptions(size, YES, [UIScreen mainScreen].scale);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return destImage;
 }
 
 - (void)addButtonPressed{
@@ -173,5 +212,105 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)sendMailPressed{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"What would you like to send?"
+//                                                    message:@""
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"Cancel"
+//                                          otherButtonTitles:@"Import ChainLube file",@"Export ChainLube File",@"", nil];
+//    [alert show];
+    //[coreDataModel jsonStringValue]
+    
+// ENABLE TO WORK ON EXPORT/IMPORT
+//    Vehicle *object = self.vehicles[0];
+//    NSString *myObject = [object jsonStringValue];
+//    NSLog(@"Object: %@",myObject);
 
+    if ([MFMailComposeViewController canSendMail]) [self showEmailModalView];
+}
+- (NSString *)getCoreVehicles{
+    
+    __block NSMutableString *printObject = [NSMutableString new];
+    if (self.vehicles.count > 0){
+        [self.vehicles enumerateObjectsUsingBlock:^(Vehicle *v, NSUInteger idxVehicle, BOOL *stop) {
+            [printObject appendFormat:@"&nbsp;<h3>VEHICLE DESCRIPTION</h3>Name: %@<br>Specifications: %@<br> Notes: %@<br> Units: %@<br> Photo:%@.png<br><h4>VEHICLE RECORDS</h4>",v.name,v.spec,v.note,v.units,v.name];
+            if (v.image != nil){
+                [self.shareImageData addObject:@{@"image":v.image,@"name":v.name}];
+            }
+            if (v.records.count > 0){
+                [v.records enumerateObjectsUsingBlock:^(Record *r, NSUInteger idxRecord, BOOL *stop) {
+                    NSDateFormatter *dateFormat = [NSDateFormatter new];
+                    [dateFormat setDateStyle:NSDateFormatterLongStyle];
+                    [printObject appendFormat:@"<br>Task: %@<br>Date: %@<br> Odometer: %@<br> Cost: %@<br> Note: %@<br> Photos:",r.task,[dateFormat stringFromDate:r.date],r.odometer,r.cost,r.note];
+                    __block NSString *recordName = r.task;
+                    [r.photos enumerateObjectsUsingBlock:^(RecordPhoto *p, NSUInteger idxPhoto, BOOL *stop)
+                     {
+                         if ([p.label  isEqual: @""]){
+                             [printObject appendFormat:@"%@.png ",recordName];
+                         [self.shareImageData addObject:@{@"image":p.photo,@"name":p.label}];
+                         }
+
+                         else{
+                             [printObject appendFormat:@"%@.png ",p.label];
+//                           [printObject appendFormat:@"<img src=\'cid:%@.png\'>",p.label];
+                             [self.shareImageData addObject:@{@"image":p.photo,@"name":p.label}];
+                         }
+                    }];
+                    [printObject appendString:@"<br>"];
+                    [printObject appendString:@"</p>"];
+                }];
+            }
+                else [printObject appendString:@"No records found for this vehicle</p>"];
+        }];
+    }
+    else [printObject appendString:@"<p>No Vehicles Found</p>"];
+    NSLog(@"%@",printObject);
+
+    return [NSString stringWithString:printObject];
+}
+-(void)showEmailModalView {
+    NSString *vehicleLog = [self getCoreVehicles];
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    picker.mailComposeDelegate = self;
+    
+    [picker setSubject:@"Vehicle Log"];
+    
+    [self.shareImageData enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+        [picker addAttachmentData:[obj objectForKey:@"image"]  mimeType:@"image/png" fileName:[obj objectForKey:@"name"]];
+
+    }];
+
+    
+    [picker setMessageBody:vehicleLog isHTML:YES];
+    
+    picker.navigationBar.barStyle = UIBarStyleBlack;
+    [self presentViewController:picker animated:YES completion:nil];
+//    [self.navigationController pushViewController:picker animated:YES];
+
+    
+}
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    // Notifies users about errors associated with the interface
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            break;
+        case MFMailComposeResultSaved:
+            break;
+        case MFMailComposeResultSent:
+            break;
+        case MFMailComposeResultFailed:
+            break;
+        default:
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Email" message:@"Sending Failed, you cannot send messages at this time."
+                                                           delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        }
+            
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

@@ -34,7 +34,7 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    if (self.vehicleDelegate) // Add save button if image came from Flickr search.
+    if (self.vehicleDelegate || self.recordDelegate) // Add save button if image came from Flickr search.
     {
         UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave  target:self action:@selector(saveButtonPressed)];
         self.navigationItem.rightBarButtonItem = saveButton;
@@ -97,7 +97,8 @@
     // Dispose of any resources that can be recreated.
 }
 -(void)saveButtonPressed{
-    self.vehicleDelegate.flickrImage = self.selectedImage;
+    if (self.vehicleDelegate) self.vehicleDelegate.flickrImage = self.selectedImage;
+    else if (self.recordDelegate) self.recordDelegate.flickrImage = self.selectedImage;
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -13,5 +13,6 @@
 
 @property (nonatomic) Vehicle *selectedVehicle;
 @property (nonatomic) Record *selectedRecord;
+@property (nonatomic) UIImageView *flickrImage;
 
 @end

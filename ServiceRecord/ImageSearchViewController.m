@@ -7,7 +7,6 @@
 //
 
 #import "ImageSearchViewController.h"
-#import "VehicleViewController.h"
 #import "ImageViewController.h"
 
 #define flickrKey @"61426f3ba050d2fec1cfa17f9a71f95d"
@@ -149,7 +148,7 @@
     [self.indicator startAnimating];
     
     NSString *escapedSearchTerm= [self.searchTerm stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *searchURL = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&sort=relevance&text=%@&per_page=36&page=%d&format=json&nojsoncallback=1",flickrKey,escapedSearchTerm,self.flickrPage ];
+    NSString *searchURL = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&sort=relevance&text=%@&per_page=36&page=%d&format=json&nojsoncallback=1",flickrKey,escapedSearchTerm,self.flickrPage ];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
@@ -182,7 +181,7 @@
                     if (resultPhotoArray.count > 0){
                         if (self.flickrMaxPage == 0) self.flickrMaxPage = [resultParameters[@"photos"][@"pages"] integerValue];
                         for(NSMutableDictionary *resultPhoto in resultPhotoArray){
-                            NSString *photoSizes = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.getsizes&api_key=%@&photo_id=%lld&format=json&nojsoncallback=1",flickrKey,[resultPhoto[@"id"] longLongValue]];
+                            NSString *photoSizes = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.getsizes&api_key=%@&photo_id=%lld&format=json&nojsoncallback=1",flickrKey,[resultPhoto[@"id"] longLongValue]];
                             NSString *sizeResult = [NSString stringWithContentsOfURL:[NSURL URLWithString:photoSizes] encoding:NSUTF8StringEncoding error:&error];
                             if (error != nil) {
                                 //            completionBlock(term,nil,error);
@@ -305,11 +304,14 @@
         ImageViewController *ic = [ImageViewController new];
         
         NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.flickrDisplayPhotos[i][@"bigphotoURL"]] options:0 error:&error];
-        
+//        NSData *imageThumbData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.flickrDisplayPhotos[i][@"thumb"]] options:0 error:&error];
         if (error == nil){
             UIImage *image = [UIImage imageWithData:imageData];
+//            UIImage *imageThumb = [UIImage imageWithData:imageThumbData];
             ic.selectedImage = [[UIImageView alloc] initWithImage:image];
+//            ic.selectedImageThumb = [[UIImageView alloc] initWithImage:imageThumb];
             ic.vehicleDelegate = self.vehicleDelegate;
+            ic.recordDelegate = self.recordDelegate;
             [self.navigationController pushViewController:ic animated:YES];
         }else{
             self.alert = [[UIAlertView new] initWithTitle:@"Flickr Image is not available at this time"
@@ -337,7 +339,7 @@
     self.flickrMaxPage = 0;
     self.flickrThumbPhotos = [NSMutableArray new];
     self.searchTerm = self.searchPhraseTextField.text;
-    
+  
     [self searchFlickr];
     
     return YES;

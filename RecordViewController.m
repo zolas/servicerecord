@@ -10,6 +10,9 @@
 #import "RecordViewController.h"
 #import "AppDelegate.h"
 #import "ImageViewController.h"
+#import "ImageSearchViewController.h"
+
+
 
 @interface RecordViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate>
 
@@ -17,6 +20,7 @@
 @property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) NSDateFormatter *dateFormat;
 @property (nonatomic, strong) NSMutableArray *photoRecords;
+
 @property (nonatomic, strong) UITextField *costTextField;
 @property (nonatomic, strong) UITextField *dateTextField;
 @property (nonatomic, strong) UITextField *odometerTextField;
@@ -38,7 +42,8 @@ enum Properties {
     PropertyCount
 };
 
-UIActionSheet *pickerViewPopup;
+//UIActionSheet *pickerViewPopup;
+UIView *pickerViewPopup;
 UIPopoverController *datePopover;
 
 @implementation RecordViewController
@@ -62,7 +67,9 @@ UIPopoverController *datePopover;
     {
         self.title = @"New Record";
     }
-    
+    //Handle Flickr image
+    if (self.flickrImage) [self flickrImageFound];
+
     [self.tableView reloadData];
 
 }
@@ -181,10 +188,10 @@ UIPopoverController *datePopover;
             newTextField.returnKeyType = UIReturnKeyDone;
             newTextField.delegate = self;
             if (b.label) newTextField.text = b.label;
-            [self.photoRecords addObject:@{@"photo":b.photo,@"label":newTextField}];
+            UIImage *thumbImage = [self imageWithImage:[UIImage imageWithData:b.photo scale:1.0]convertToSize:CGSizeMake(120,120)];
+            [self.photoRecords addObject:@{@"photo":b.photo,@"label":newTextField,@"thumb":thumbImage}];
         }];
     }
-
 }
 
 #pragma  mark TableView Method Implementations
@@ -238,13 +245,13 @@ UIPopoverController *datePopover;
         }break;
         default:{
             long i = indexPath.row - PropertyCount;
-            [self.photoRecords enumerateObjectsUsingBlock:^(NSDictionary *k, NSUInteger idx, BOOL *stop) {
-                if (idx == i){
-                   UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:k[@"photo"] scale:[[UIScreen mainScreen] scale]]];
-                    [existingPhoto sizeToFit];
-                    cell.imageView.image = existingPhoto.image;
-                    cell.accessoryView = k[@"label"];
-                }}];
+
+//                   UIImageView *existingPhoto = [[UIImageView alloc]  initWithImage:[UIImage imageWithData:k[@"photo"] scale:[[UIScreen mainScreen] scale]]];
+//                    [existingPhoto sizeToFit];
+            cell.imageView.image = self.photoRecords[i][@"thumb"];
+
+//                    cell.imageView.image = existingPhoto.image;
+                    cell.accessoryView = self.photoRecords[i][@"label"];
         }break;
     }
     return cell;
@@ -359,7 +366,9 @@ UIPopoverController *datePopover;
         
     }else {
         
-        pickerViewPopup = [[UIActionSheet alloc] initWithTitle:@"Date" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+//        pickerViewPopup = [[UIActionSheet alloc] initWithTitle:@"Date" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        pickerViewPopup = [[UIView alloc] initWithFrame:CGRectMake(0, (self.view.frame.size.height - 350), self.view.frame.size.width, self.view.frame.size.height)];
+        pickerViewPopup.backgroundColor = [UIColor whiteColor];
         [pickerViewPopup becomeFirstResponder];
         self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
         self.datePicker.datePickerMode = UIDatePickerModeDate;
@@ -379,7 +388,8 @@ UIPopoverController *datePopover;
         [barItems addObject:doneBtn];
         
         [pickerToolbar setItems:barItems animated:YES];
-        [pickerViewPopup showInView:self.view];
+        [self.view addSubview:pickerViewPopup];
+//        [pickerViewPopup showInView:self.view];
         CGFloat datePickerHeight = self.datePicker.frame.size.height + pickerToolbar.frame.size.height;
         [pickerViewPopup setFrame:(CGRectMake(0, self.view.frame.size.height - datePickerHeight , self.view.frame.size.width, datePickerHeight))];
         
@@ -398,7 +408,8 @@ UIPopoverController *datePopover;
         [datePopover dismissPopoverAnimated:YES ];
     else{
         [pickerViewPopup resignFirstResponder];
-        [pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+        [pickerViewPopup removeFromSuperview];
+//        [pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
     }
     
     self.dateTextField.text = [self.dateFormat stringFromDate:self.datePicker.date];
@@ -409,8 +420,10 @@ UIPopoverController *datePopover;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         [datePopover dismissPopoverAnimated:YES ];
     else{
-        [pickerViewPopup dismissWithClickedButtonIndex:0 animated:YES];
+//        [pickerViewPopup dismissWithClickedButtonIndex:0 animated:YES];
         [pickerViewPopup resignFirstResponder];
+        [pickerViewPopup removeFromSuperview];
+
     }
     
 }
@@ -506,7 +519,7 @@ UIPopoverController *datePopover;
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Camera", @"Existing Photo", nil];
+                                          otherButtonTitles:@"Camera", @"Existing Photo",@"Flickr", nil];
     
     [alert show];
 }
@@ -546,6 +559,15 @@ UIPopoverController *datePopover;
         picker.allowsEditing = YES;
         [self presentViewController:picker animated:YES completion:nil];
     }
+    else if (buttonIndex == 3){  //Flickr Photo
+        ImageSearchViewController *is = [ImageSearchViewController new];
+        is.recordDelegate = self;
+        [self.navigationController pushViewController:is animated:YES];
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        
+    }
+    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -565,8 +587,8 @@ UIPopoverController *datePopover;
     newTextField.returnKeyType = UIReturnKeyDone;
     newTextField.delegate = self;
     newTextField.frame = CGRectMake(0, 10, 150, 50);
-
-    [self.photoRecords addObject:@{@"photo":photoData,@"label":newTextField}];
+    UIImage *thumbImage = [self imageWithImage:[UIImage imageWithData:photoData scale:1.0]convertToSize:CGSizeMake(120,120)];
+    [self.photoRecords addObject:@{@"photo":photoData,@"label":newTextField,@"thumb":thumbImage}];
 
     if([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
         UIImage *photoTaken = [info objectForKey:@"UIImagePickerControllerEditedImage"];
@@ -611,6 +633,24 @@ UIPopoverController *datePopover;
                 ic.selectedImage = existingPhoto;
                 [self.navigationController pushViewController:ic animated:YES];
             }
+}
+
+- (void)flickrImageFound{
+    self.flickrImage.image = [self imageWithImage:self.flickrImage.image convertToSize:CGSizeMake(self.flickrImage.image.size.width,self.flickrImage.image.size.height)];
+    NSData *photoData = UIImagePNGRepresentation(self.flickrImage.image);
+    UITextField *newTextField = [UITextField new];
+    newTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    newTextField.borderStyle = UITextBorderStyleRoundedRect;
+    newTextField.font = [UIFont systemFontOfSize:15];
+    newTextField.placeholder = @"Label";
+    newTextField.autocorrectionType = UITextAutocorrectionTypeYes;
+    newTextField.returnKeyType = UIReturnKeyDone;
+    newTextField.delegate = self;
+    newTextField.frame = CGRectMake(0, 10, 150, 50);
+    UIImage *thumbImage = [self imageWithImage:[UIImage imageWithData:photoData scale:1.0]convertToSize:CGSizeMake(120,120)];
+
+    [self.photoRecords addObject:@{@"photo":photoData,@"label":newTextField,@"thumb":thumbImage}];
+    self.flickrImage = nil;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
