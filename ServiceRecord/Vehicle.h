@@ -11,7 +11,7 @@
 
 @class Record;
 
-@interface Vehicle : NSManagedObject
+@interface Vehicle : NSManagedObject 
 
 @property (nonatomic, retain) NSData * image;
 @property (nonatomic, retain) NSString * name;

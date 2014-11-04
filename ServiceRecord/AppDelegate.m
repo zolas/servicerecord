@@ -24,7 +24,6 @@
     FeaturedViewController *vc = [FeaturedViewController new];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:vc];
     self.window.rootViewController = nc;
-    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
