@@ -519,7 +519,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "276"
             endingLineNumber = "276"
-            landmarkName = "-showEmailModalView"
+            landmarkName = "-getCoreVehicles"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -535,7 +535,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "238"
             endingLineNumber = "238"
-            landmarkName = "-getCoreVehicles"
+            landmarkName = "-sendMailPressed"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -727,7 +727,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "140"
             endingLineNumber = "140"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -759,7 +759,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
             endingLineNumber = "224"
-            landmarkName = "-sendMailPressed"
+            landmarkName = "-imageWithImage:convertToSize:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -775,7 +775,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
             endingLineNumber = "57"
-            landmarkName = "-updateVehicleThumbs"
+            landmarkName = "-refreshData"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -791,7 +791,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "58"
             endingLineNumber = "58"
-            landmarkName = "-updateVehicleThumbs"
+            landmarkName = "-refreshData"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

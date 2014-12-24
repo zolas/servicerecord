@@ -48,6 +48,7 @@
     self.vehicleThumbs = [NSMutableArray new];
     [self updateVehicleThumbs];
     [self.tableView reloadData];
+    
 
 }
 
@@ -69,6 +70,10 @@
     [super viewWillAppear:animated];
     NSSortDescriptor *sortByDate = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
     self.sortedRecordByDate = [[self.selectedVehicle.records sortedArrayUsingDescriptors:@[sortByDate]] mutableCopy];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadFetchedResults:)
+                                                 name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+                                               object:[[UIApplication sharedApplication] delegate]];
 }
 
 - (void)viewDidLoad{
@@ -111,6 +116,18 @@
     [self.view addSubview:vehicleToolbar];
     
     self.tableView.rowHeight = 80;
+    
+    
+  
+}
+- (void)reloadFetchedResults:(NSNotification*)note {
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    [delegate.managedObjectContext mergeChangesFromContextDidSaveNotification:note];
+    [self viewDidAppear:YES];
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 #pragma mark - TableView DataSource Implementation

@@ -58,6 +58,8 @@
     
     self.navigationItem.rightBarButtonItem = doneButton;
     self.title = @"Select records to send";
+
+
 //    self.records = [NSArray new];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -66,6 +68,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
 
 - (void)didReceiveMemoryWarning
 {

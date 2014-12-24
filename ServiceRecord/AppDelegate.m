@@ -81,6 +81,41 @@
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
     return _managedObjectContext;
+//    if (_managedObjectContext != nil) {
+//        return _managedObjectContext;
+//    }
+//    
+//    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+//    
+//    if (coordinator != nil) {
+//        NSManagedObjectContext* moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+//        
+//        [moc performBlockAndWait:^{
+//            [moc setPersistentStoreCoordinator: coordinator];
+//            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(mergeChangesFrom_iCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:coordinator];
+//        }];
+//        _managedObjectContext = moc;
+//    }
+//    
+//    return _managedObjectContext;
+//}
+//
+//- (void)mergeChangesFrom_iCloud:(NSNotification *)notification {
+//    
+//    NSLog(@"Merging in changes from iCloud...");
+//    
+//    NSManagedObjectContext* moc = [self managedObjectContext];
+//    
+//    [moc performBlock:^{
+//        
+//        [moc mergeChangesFromContextDidSaveNotification:notification];
+//        
+//        NSNotification* refreshNotification = [NSNotification notificationWithName:@"SomethingChanged"
+//                                                                            object:self
+//                                                                          userInfo:[notification userInfo]];
+//        
+//        [[NSNotificationCenter defaultCenter] postNotification:refreshNotification];
+//    }];
 }
 
 // Returns the managed object model for the application.
@@ -97,15 +132,35 @@
 // Returns the persistent store coordinator for the application.
 // If the coordinator doesn't already exist, it is created and the application's store added to it.
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if (_persistentStoreCoordinator != nil) {
+    if((_persistentStoreCoordinator != nil)) {
         return _persistentStoreCoordinator;
     }
+        _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+    NSURL *documentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ServiceRecord.sqlite"];
+    NSURL *storeURL = [documentsDirectory URLByAppendingPathComponent:@"ServiceRecord.sqlite"];
     
     NSError *error = nil;
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    NSDictionary *storeOptions = @{NSPersistentStoreUbiquitousContentNameKey: @"ChainLubeCloudStore"};
+    
+    NSPersistentStore *store = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                         configuration:nil
+                                                                   URL:storeURL
+                                                               options:storeOptions
+                                                                 error:&error];
+    
+//    NSURL *finaliCloudURL = [store URL];
+    return _persistentStoreCoordinator;
+    
+//    if (_persistentStoreCoordinator != nil) {
+//        return _persistentStoreCoordinator;
+//    }
+//    
+//    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"ServiceRecord.sqlite"];
+//    
+//    NSError *error = nil;
+//    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+//    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
@@ -129,11 +184,11 @@
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }    
-    
-    return _persistentStoreCoordinator;
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        abort();
+//    }    
+//    
+//    return _persistentStoreCoordinator;
 }
 
 #pragma mark - Application's Documents directory

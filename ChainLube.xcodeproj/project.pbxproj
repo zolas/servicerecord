@@ -42,7 +42,6 @@
 		28C8C19518A97E0F009231DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28C8C19318A97E0F009231DA /* InfoPlist.strings */; };
 		28C8C19718A97E0F009231DA /* ServiceRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8C19618A97E0F009231DA /* ServiceRecordTests.m */; };
 		28C8C1A218A982F5009231DA /* FeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C8C1A118A982F5009231DA /* FeaturedViewController.m */; };
-		28D956F01A08D46C00E1FDDE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D956EF1A08D46C00E1FDDE /* CloudKit.framework */; };
 		28E521011967330100FD1EBE /* NSArray+BSJSONAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E520F71967330100FD1EBE /* NSArray+BSJSONAdditions.m */; };
 		28E521021967330100FD1EBE /* NSDictionary+BSJSONAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E520F91967330100FD1EBE /* NSDictionary+BSJSONAdditions.m */; };
 		28E521031967330100FD1EBE /* NSScanner+BSJSONAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E520FB1967330100FD1EBE /* NSScanner+BSJSONAdditions.m */; };
@@ -119,7 +118,6 @@
 		28C8C1A018A982F5009231DA /* FeaturedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeaturedViewController.h; path = ViewControllers/FeaturedViewController.h; sourceTree = "<group>"; };
 		28C8C1A118A982F5009231DA /* FeaturedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeaturedViewController.m; path = ViewControllers/FeaturedViewController.m; sourceTree = "<group>"; };
 		28D956EE1A08D45700E1FDDE /* ChainLube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ChainLube.entitlements; sourceTree = SOURCE_ROOT; };
-		28D956EF1A08D46C00E1FDDE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		28E520C71965D56500FD1EBE /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		28E520C81965D56500FD1EBE /* BSJSONAdditions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = BSJSONAdditions.xcodeproj; sourceTree = "<group>"; };
 		28E520CB1965D56500FD1EBE /* BSJSONEncoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSJSONEncoder.h; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 				28C3B5331958AE6900D980D9 /* MessageUI.framework in Frameworks */,
 				286B08A4193393A6009F0FAF /* QuartzCore.framework in Frameworks */,
 				286B08A219311D30009F0FAF /* MediaPlayer.framework in Frameworks */,
-				28D956F01A08D46C00E1FDDE /* CloudKit.framework in Frameworks */,
 				28FEA71518C0ECBA00D1655E /* MobileCoreServices.framework in Frameworks */,
 				28C8C16E18A97E0F009231DA /* CoreGraphics.framework in Frameworks */,
 				28C8C17218A97E0F009231DA /* CoreData.framework in Frameworks */,
@@ -240,7 +237,6 @@
 		28C8C16A18A97E0F009231DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				28D956EF1A08D46C00E1FDDE /* CloudKit.framework */,
 				28E520C61965D56500FD1EBE /* bsjsonadditions-master */,
 				28C3B5321958AE6900D980D9 /* MessageUI.framework */,
 				286B08A3193393A6009F0FAF /* QuartzCore.framework */,
@@ -702,14 +698,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = ChainLube.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Black Magma Inc. (RB33Z6JE4A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Black Magma Inc. (RB33Z6JE4A)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ServiceRecord/ServiceRecord-Prefix.pch";
 				INFOPLIST_FILE = "ServiceRecord/ServiceRecord-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = ChainLube;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "01f2b006-521b-499c-a364-eb37cac5dbbe";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

@@ -30,6 +30,7 @@ enum Properties {
     Note,
     Units,
     Photo,
+    Stats,
     PropertyCount
 };
 
@@ -148,8 +149,8 @@ UIActionSheet *pickerViewPopup;
         
         self.units = self.selectedVehicle.units;
     }
+  
 }
-
 # pragma mark TableView Implementation
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -209,6 +210,11 @@ UIActionSheet *pickerViewPopup;
             }
             
         }break;
+        case Stats:{
+            cell.textLabel.text = @"Current Stats";
+            cell.detailTextLabel.text = @"";
+            cell.accessoryView = [self vehicleStats];
+        }
     }
     return cell;
 }
@@ -224,6 +230,10 @@ UIActionSheet *pickerViewPopup;
         }break;
         case Photo:{
             return 120.0;
+        case Stats:{
+            return 120.0;
+        }
+            
         }break;
     }
     return 60; // default row height
@@ -249,6 +259,25 @@ UIActionSheet *pickerViewPopup;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
+}
+
+#pragma mark Statistics calculation method
+
+- (UILabel *)vehicleStats{
+    UILabel *statLabel = [UILabel new];
+    statLabel.frame = CGRectMake(0, 10, 150, 50);
+
+    statLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleHeight |UIViewAutoresizingFlexibleTopMargin;
+
+    __block int totalCost = 0;
+    [self.selectedVehicle.records enumerateObjectsUsingBlock:^(Record *r, NSUInteger idx, BOOL *stop) {
+        if ( ! r.odometer.integerValue == 0 )
+            totalCost += r.odometer.integerValue;
+    }];
+    NSString *vehicleStatString = [NSString stringWithFormat:@"Latest Odometer: %ld\n Total Cost: %d\n",(long)self.selectedVehicle.odometer.integerValue, totalCost];
+    statLabel.text = vehicleStatString;
+    statLabel.sizeToFit;
+    return statLabel;
 }
 
 #pragma mark Segmented Control method Implementations

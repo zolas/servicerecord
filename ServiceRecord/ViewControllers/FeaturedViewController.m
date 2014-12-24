@@ -29,16 +29,31 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.title=@"ChainLube";
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadFetchedResults:)
+                                                 name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+                                               object:[[UIApplication sharedApplication] delegate]];
+    
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.title=@"";
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    // Fetch and sort the vehicles from persistent data store
+    [self refreshData];
+    
+
+
+    
+    [self.tableView reloadData];
+}
+
+-(void) refreshData{
     AppDelegate *delegate = [UIApplication sharedApplication].delegate;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Vehicle"];
     NSSortDescriptor *sortByName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
@@ -46,12 +61,9 @@
     self.vehicles = [[delegate.managedObjectContext executeFetchRequest:fetchRequest error:nil] mutableCopy];
     self.vehicleThumbs = [NSMutableArray new];
     [self updateVehicleThumbs];
-    
 
-
-    
-    [self.tableView reloadData];
 }
+
 - (void)updateVehicleThumbs{
     [self.vehicles enumerateObjectsUsingBlock:^(Vehicle *v, NSUInteger idxVehicle, BOOL *stop) {
         if (v.image != Nil){
@@ -100,7 +112,17 @@
     self.navigationItem.rightBarButtonItem = addButton;
     self.navigationItem.leftBarButtonItem = shareButton;
     
+
+    
 }
+
+- (void)reloadFetchedResults:(NSNotification*)note {
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    [delegate.managedObjectContext mergeChangesFromContextDidSaveNotification:note];
+    [self viewDidAppear:YES];
+}
+
+
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.tableView reloadData]; //Reload the table view everytime the orientation changes

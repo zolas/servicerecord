@@ -192,6 +192,8 @@ UIPopoverController *datePopover;
             [self.photoRecords addObject:@{@"photo":b.photo,@"label":newTextField,@"thumb":thumbImage}];
         }];
     }
+
+
 }
 
 #pragma  mark TableView Method Implementations

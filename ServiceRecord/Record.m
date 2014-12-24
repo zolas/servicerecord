@@ -22,3 +22,4 @@
 @dynamic photos;
 
 @end
+
